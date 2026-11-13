@@ -1,0 +1,54 @@
+[
+  {
+    "check": "fmt",
+    "exit_code": 0
+  },
+  {
+    "check": "root-init",
+    "exit_code": 0
+  },
+  {
+    "check": "root-validate",
+    "exit_code": 0
+  },
+  {
+    "check": "root-test",
+    "exit_code": 0
+  },
+  {
+    "check": "dev-init",
+    "exit_code": 0
+  },
+  {
+    "check": "dev-validate",
+    "exit_code": 0
+  },
+  {
+    "check": "dev-test",
+    "exit_code": 0
+  },
+  {
+    "check": "test-init",
+    "exit_code": 0
+  },
+  {
+    "check": "test-validate",
+    "exit_code": 0
+  },
+  {
+    "check": "test-test",
+    "exit_code": 0
+  },
+  {
+    "check": "prod-init",
+    "exit_code": 0
+  },
+  {
+    "check": "prod-validate",
+    "exit_code": 0
+  },
+  {
+    "check": "prod-test",
+    "exit_code": 0
+  }
+]

@@ -1,0 +1,4 @@
+# Copy into ONE environment root after backend bootstrap and access approval.
+terraform {
+  backend "azurerm" {}
+}

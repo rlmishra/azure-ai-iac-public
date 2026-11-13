@@ -1,0 +1,8 @@
+# Illustrative names only; no account keys, tokens or secrets.
+resource_group_name  = "rg-approved-state"
+storage_account_name = "approvedstateaccount"
+container_name       = "terraform"
+key                  = "enterprise-ai/dev/foundation.tfstate"
+use_azuread_auth     = true
+# For an approved federated runner, also set use_oidc = true and configure
+# its ARM_* identity/token-delivery environment externally.

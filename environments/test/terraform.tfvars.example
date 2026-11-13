@@ -1,0 +1,18 @@
+# Illustrative only. Replace UUIDs, names, network allocation and regional approvals.
+subscription_id = "00000000-0000-0000-0000-000000000000"
+tenant_id = "00000000-0000-0000-0000-000000000000"
+name = "aicore"
+location = "eastus2"
+approved_locations = ["eastus2"]
+key_vault_name = "kv-aicore-test-unique"
+storage_account_name = "staicoretestunique"
+address_space = ["10.41.0.0/16"]
+workload_prefixes = ["10.41.1.0/24"]
+endpoint_prefixes = ["10.41.2.0/24"]
+trusted_prefixes = []
+dns_servers = []
+storage_replication_type = "ZRS"
+retention_in_days = 90
+grant_workload_data_access = false
+tags = { owner = "platform-team", cost_center = "REPLACE", data_classification = "confidential", application = "enterprise-ai" }
+# policy_assignments: use approved existing deny/audit initiative IDs.

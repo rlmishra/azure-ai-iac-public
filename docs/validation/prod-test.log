@@ -1,0 +1,13 @@
+tests/foundation.tftest.hcl... in progress
+  run "private_foundation"... pass
+  run "approved_data_grants"... pass
+  run "reject_unapproved_region"... pass
+  run "reject_missing_tags"... pass
+  run "reject_invalid_storage_name"... pass
+  run "reject_small_endpoint_subnet"... pass
+  run "reject_overlapping_subnets"... pass
+  run "reject_subnet_outside_vnet"... pass
+tests/foundation.tftest.hcl... tearing down
+tests/foundation.tftest.hcl... pass
+
+Success! 8 passed, 0 failed.
