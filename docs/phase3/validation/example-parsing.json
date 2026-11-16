@@ -1,0 +1,16 @@
+{
+  "parsed_examples": [
+    "terraform.tfvars.example",
+    "gateways/terraform.tfvars.example",
+    "environments/test/foundry.tfvars.example",
+    "environments/test/terraform.tfvars.example",
+    "environments/dev/foundry.tfvars.example",
+    "environments/dev/terraform.tfvars.example",
+    "environments/prod/foundry.tfvars.example",
+    "environments/prod/terraform.tfvars.example",
+    "gateways/test/terraform.tfvars.example",
+    "gateways/dev/terraform.tfvars.example",
+    "gateways/prod/terraform.tfvars.example",
+    "modules/gravitee/examples/reviewed-inputs.tfvars.json.example"
+  ]
+}

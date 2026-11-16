@@ -1,0 +1,8 @@
+tests/integration.tftest.hcl... in progress
+  run "disabled_default"... pass
+  run "enabled_private_draft"... pass
+  run "reject_missing_activation_inputs"... pass
+tests/integration.tftest.hcl... tearing down
+tests/integration.tftest.hcl... pass
+
+Success! 3 passed, 0 failed.

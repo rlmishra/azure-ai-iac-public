@@ -1,0 +1,49 @@
+{
+  "deployment_enabled": false,
+  "publish_apis": false,
+  "management_url": "https://management.example.org/automation",
+  "organization_id": "REPLACE_WITH_ACTUAL_ORG",
+  "environment_id": "REPLACE_WITH_ACTUAL_ENV",
+  "platform": {
+    "server_version": "4.13.0",
+    "gateway_version": "4.13.0",
+    "edition": "REPLACE_WITH_ACTUAL_LICENSED_EDITION",
+    "plugin_versions": {},
+    "automation_api_confirmed": false,
+    "license_entitlement_confirmed": false,
+    "policy_schema_compatibility_confirmed": false,
+    "azure_vm_managed_identity_confirmed": false,
+    "private_dns_tls_egress_confirmed": false,
+    "distributed_counter_store_confirmed": false,
+    "analytics_privacy_confirmed": false,
+    "tracing_exporter_redaction_confirmed": false
+  },
+  "consumer": {
+    "tenant_id": "00000000-0000-0000-0000-000000000000",
+    "audience": "00000000-0000-0000-0000-000000000000",
+    "required_app_role": "AI.Invoke",
+    "backend_imds_identity_client_id": "00000000-0000-0000-0000-000000000000"
+  },
+  "approved_backends": {
+    "chat": {
+      "approval_reference": "REPLACE_WITH_ACTUAL_APPROVAL",
+      "contract": "azure_openai_chat_completions",
+      "openai_endpoint": "https://sample-foundry.openai.azure.com/",
+      "deployment_name": "chat",
+      "api_version": "2024-10-21",
+      "phase2_deployment_id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example/providers/Microsoft.CognitiveServices/accounts/sample-foundry/deployments/chat"
+    }
+  },
+  "apis": {
+    "chat": {
+      "backend": "chat",
+      "context_path": "/ai/dev/chat/",
+      "requests_per_minute": 60,
+      "requests_per_day": 1000
+    }
+  },
+  "applications": {},
+  "subscriptions": {},
+  "enable_analytics": false,
+  "enable_tracing": false
+}

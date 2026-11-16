@@ -1,0 +1,39 @@
+Initializing modules...
+- foundry in modules/foundry
+- identity in modules/identity
+- networking in modules/networking
+- monitoring in modules/monitoring
+- security in modules/security
+- test.tests.foundry-module.isolated_account_defaults in modules/foundry
+- test.tests.foundry-module.least_privilege_roles in modules/foundry
+- test.tests.foundry-module.explicit_approved_model in modules/foundry
+- test.tests.foundry-module.reject_missing_approval in modules/foundry
+- test.tests.foundry-module.reject_model_region in modules/foundry
+- test.tests.foundry-module.reject_model_sku in modules/foundry
+- test.tests.foundry-module.reject_capacity_ceiling in modules/foundry
+- test.tests.foundry-module.reject_fractional_capacity in modules/foundry
+- test.tests.foundry-module.reject_implicit_version in modules/foundry
+- test.tests.foundry-module.reject_unactivated_model in modules/foundry
+- test.tests.foundry-module.reject_no_projects in modules/foundry
+- test.tests.foundry-module.reject_missing_data_scope in modules/foundry
+- test.tests.foundry-module.reject_invalid_principal in modules/foundry
+- test.tests.foundry-module.reject_invalid_account_name in modules/foundry
+- test.tests.foundry-module.reject_account_region in modules/foundry
+- test.tests.identity.reject_privileged_role in modules/identity
+- test.tests.identity.reject_broad_scope in modules/identity
+- test.tests.networking.network_isolation in modules/networking
+- test.tests.networking.reject_world_trust in modules/networking
+
+Initializing provider plugins...
+- Reusing version 5.13.0 of hashicorp/azurerm from the dependency lock file
+- Using hashicorp/azurerm v5.13.0 from the shared cache directory
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.

@@ -1,0 +1,58 @@
+{
+  "jwt": {
+    "repository": "gravitee-io/gravitee-policy-jwt",
+    "source_path": "src/main/resources/schemas/schema-form.json",
+    "url": "https://raw.githubusercontent.com/gravitee-io/gravitee-policy-jwt/f5bafb0aad0eeaea226e67c591fa31ce1f6a0de8/src/main/resources/schemas/schema-form.json",
+    "sha256": "b00efafe241ddb3e45a0d349c6fb964abec8893304b2dfb49cf3cecd7d54161e",
+    "tree_sha": "f5bafb0aad0eeaea226e67c591fa31ce1f6a0de8",
+    "ref_type": "immutable Git tree object returned by the GitHub Git Trees API"
+  },
+  "policy-http-callout": {
+    "repository": "gravitee-io/gravitee-policy-callout-http",
+    "source_path": "src/main/resources/schemas/schema-form.json",
+    "url": "https://raw.githubusercontent.com/gravitee-io/gravitee-policy-callout-http/194248bdf26281620fe682af8d73ac6d3b041beb/src/main/resources/schemas/schema-form.json",
+    "sha256": "2d0b7ab5ad894047f72842eddb1f59fee71c0bc0663092667dda6a934516f3b4",
+    "tree_sha": "194248bdf26281620fe682af8d73ac6d3b041beb",
+    "ref_type": "immutable Git tree object returned by the GitHub Git Trees API"
+  },
+  "transform-headers": {
+    "repository": "gravitee-io/gravitee-policy-transform-headers",
+    "source_path": "src/main/resources/schemas/schema-form.json",
+    "url": "https://raw.githubusercontent.com/gravitee-io/gravitee-policy-transform-headers/b17b90f69705f09f80118e361d55a993c9c84239/src/main/resources/schemas/schema-form.json",
+    "sha256": "c518bc90af4aae321b835ce654c98d7f17d4db792fab5ce7faca051b01dc89b1",
+    "tree_sha": "b17b90f69705f09f80118e361d55a993c9c84239",
+    "ref_type": "immutable Git tree object returned by the GitHub Git Trees API"
+  },
+  "policy-interrupt": {
+    "repository": "gravitee-io/gravitee-policy-interrupt",
+    "source_path": "src/main/resources/schemas/schema-form.json",
+    "url": "https://raw.githubusercontent.com/gravitee-io/gravitee-policy-interrupt/5801833af7ee412bbdf9059517fc5934e5d31c6b/src/main/resources/schemas/schema-form.json",
+    "sha256": "71c238963c09c33ce5a5ddcbedfbadcb8128182c3e7500c48ed13833dfa74aee",
+    "tree_sha": "5801833af7ee412bbdf9059517fc5934e5d31c6b",
+    "ref_type": "immutable Git tree object returned by the GitHub Git Trees API"
+  },
+  "transform-queryparams": {
+    "repository": "gravitee-io/gravitee-policy-transformqueryparams",
+    "source_path": "src/main/resources/schemas/schema-form.json",
+    "url": "https://raw.githubusercontent.com/gravitee-io/gravitee-policy-transformqueryparams/ff33aa13066295077a79730d633ced18635a625b/src/main/resources/schemas/schema-form.json",
+    "sha256": "ff72105df74d8a0fadd72850a855b76f54613a57c20a97afdae838d2d1f87b1a",
+    "tree_sha": "ff33aa13066295077a79730d633ced18635a625b",
+    "ref_type": "immutable Git tree object returned by the GitHub Git Trees API"
+  },
+  "rate-limit": {
+    "repository": "gravitee-io/gravitee-policy-ratelimit",
+    "source_path": "gravitee-policy-ratelimit/src/main/resources/schemas/schema-form.json",
+    "url": "https://raw.githubusercontent.com/gravitee-io/gravitee-policy-ratelimit/8134480eeb7526a32d715e72b63b87554fb1b697/gravitee-policy-ratelimit/src/main/resources/schemas/schema-form.json",
+    "sha256": "f2ccb637daf6b724731ce9fc49d6756a392029cd4031a8d40caf9e6d0aac2cb9",
+    "tree_sha": "8134480eeb7526a32d715e72b63b87554fb1b697",
+    "ref_type": "immutable Git tree object returned by the GitHub Git Trees API"
+  },
+  "quota": {
+    "repository": "gravitee-io/gravitee-policy-ratelimit",
+    "source_path": "gravitee-policy-quota/src/main/resources/schemas/schema-form.json",
+    "url": "https://raw.githubusercontent.com/gravitee-io/gravitee-policy-ratelimit/8134480eeb7526a32d715e72b63b87554fb1b697/gravitee-policy-quota/src/main/resources/schemas/schema-form.json",
+    "sha256": "74d7cf761440ef42f9b71b3046be1d0eb2da243604b899876f4db9dc7bff73d3",
+    "tree_sha": "8134480eeb7526a32d715e72b63b87554fb1b697",
+    "ref_type": "immutable Git tree object returned by the GitHub Git Trees API"
+  }
+}

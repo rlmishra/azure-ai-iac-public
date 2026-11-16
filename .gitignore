@@ -10,3 +10,8 @@ crash.log
 backend.hcl
 .terraform.tfstate.lock.info
 *.tfplan.*
+
+# JSON variable files can contain deployment-specific confidential values.
+*.tfvars.json
+!*.tfvars.json.example
+__pycache__/

@@ -1,0 +1,15 @@
+# Safe default: no APIM resources, publication or subscriptions.
+# Supply an approved platform inventory and actual Phase 2 metadata before activation.
+deployment_enabled = false
+publish_apis = false
+management_url = "https://management.invalid/automation"
+organization_id = "UNCONFIGURED"
+environment_id = "UNCONFIGURED"
+platform = null
+consumer = null
+approved_backends = {}
+apis = {}
+applications = {}
+subscriptions = {}
+enable_tracing = false
+enable_analytics = false

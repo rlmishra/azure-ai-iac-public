@@ -1,0 +1,47 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "clearAll": {
+            "type": "boolean",
+            "title": "Clear all query parameters",
+            "description": "Please be aware that by clearing all query parameters, you mustn't be able to use them in expression language."
+        },
+        "removeQueryParameters": {
+            "type": "array",
+            "title": "Remove query parameters",
+            "items": {
+                "type": "string",
+                "title": "Query Parameter"
+            }
+        },
+        "addQueryParameters": {
+            "type": "array",
+            "title": "Add or replace query parameter",
+            "items": {
+                "type": "object",
+                "title": "Query Parameter",
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "value": {
+                        "title": "Value. (Supports EL)",
+                        "type": "string",
+                        "x-schema-form": {
+                            "expression-language": true
+                        }
+                    },
+                    "appendToExistingArray": {
+                        "title": "Append the value to existing queryParam as an array (i.e. ?key=v1&key=v2&key=v3) ?",
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "required": ["name", "value"]
+            }
+        }
+    }
+}

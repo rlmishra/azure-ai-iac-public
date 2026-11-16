@@ -1,6 +1,6 @@
-# Enterprise Azure AI infrastructure — Phases 1 and 2
+# Enterprise Azure AI infrastructure — Phases 1–3
 
-Production-oriented Terraform source, **locally validated; not deployed**. Phase 1 provides the private Azure foundation. Phase 2 adds an opt-in Microsoft Foundry AIServices account, projects, explicitly approved model deployments and scoped identity integration. Gravitee, AAP and Azure DevOps implementation remain subsequent phases.
+Production-oriented Terraform source, **locally validated; not deployed**. Phase 1 provides the private Azure foundation. Phase 2 adds an opt-in Microsoft Foundry AIServices account, projects, explicitly approved model deployments and scoped identity integration. Phase 3 adds a separate private Gravitee HTTP gateway configuration baseline; native LLM token limits, AI guardrails and MCP remain explicitly unimplemented. AAP and Azure DevOps remain subsequent phases.
 
 Start with [architecture](ARCHITECTURE.md), [Phase 2 capability evidence](docs/phase2/CAPABILITIES.md), [configuration/deployment guide](docs/phase2/DEPLOYMENT.md), [readiness checklist](docs/phase2/SECURITY-CHECKLIST.md), and [Phase 2 validation](docs/phase2/VALIDATION.md). The original [Phase 1 report](docs/VALIDATION.md) is historical evidence; it does not describe the new Foundry implementation.
 
@@ -10,7 +10,8 @@ Start with [architecture](ARCHITECTURE.md), [Phase 2 capability evidence](docs/p
 - `modules/foundry`: current Microsoft.CognitiveServices AIServices account/project architecture using official AzureRM resources, not the older hub-based Foundry/Azure ML resources.
 - `environments/dev`, `test`, `prod`: independent deployment roots, examples, provider locks and mocked tests. Use separate backend state and permissions per environment.
 - `tests`: unchanged Phase 1 regressions plus Foundry composition/module/negative-input checks.
-- `modules/gravitee`, `ansible`, `pipelines`: later-phase status documentation; no gateway or orchestration implementation is claimed.
+- `modules/gravitee`, `gateways/{dev,test,prod}`: official APIM provider 1.2.0, separate state, JWT applications/subscriptions, shared request limits and a limited Azure VM IMDS backend identity reference. Actual runtime/edition/plugin inventory remains unverified.
+- `ansible`, `pipelines`: pending later-phase orchestration work.
 
 `foundry = null` in every default example preserves Phase 1 behavior. No model is selected, deployed or given capacity by default. Enablement requires an explicit account/subdomain and project map; models also require separate activation and an explicit approval catalog. Read `modules/foundry/variables.tf` for the complete typed interface.
 
@@ -61,3 +62,14 @@ Azure-managed encryption is the implemented baseline. CMK/key lifecycle, enterpr
 Account/project and foundation data resources have Terraform deletion protections as documented; removing configuration can remove Terraform lifecycle protection. No secret values are managed in state. Provider-generated state and plans can still contain sensitive metadata; never commit them.
 
 Phase 3 must inspect official Gravitee provider/server/plugin compatibility and distinguish consumer authentication from backend Entra token acquisition. Phase 4 AAP owns post-deployment validation/evidence; Phase 5 chooses a single Terraform executor and governs approvals. No duplicate executor, gateway governance, agent runtime or application hosting is introduced by Phase 2.
+
+
+## Phase 3 — Gravitee configuration
+
+Read [capability matrix](docs/phase3/CAPABILITIES.md), [deployment/handoff](docs/phase3/DEPLOYMENT.md), [security checklist](docs/phase3/SECURITY-CHECKLIST.md) and [validation report](docs/phase3/VALIDATION.md). The Gravitee module contains executable source, not just a README. It configures an existing APIM installation; no gateway is hosted or licensed by this stack.
+
+Gateway roots are independent of the Azure roots/state. Their examples create no resources by default. Enabled drafts remain private/stopped/unpublished; publication/subscriptions require explicit approval. Candidate APIM 4.13.x server/gateway/plugin/licensing compatibility must be verified against an actual supplied inventory. Tokens/keys are never Terraform input values. No live gateway/Foundry endpoint exists merely because local mocks pass.
+
+The only backend contract is explicitly approved classic Azure OpenAI chat/completions. Consumer JWTs are separate from the gateway VM's backend managed identity. Request-count quotas are not LLM token/spend limits, and no prompt/response guardrail or MCP/tool-policy enforcement is claimed. API analytics/tracing are off by default; content/header and OTel payload logging stay off. See the module README for operational limits, especially uncached per-request IMDS token calls and unsupported hosting topologies.
+
+On Windows, run `./tests/Validate-Gravitee.ps1` in addition to the Azure validation helper. The offline policy checker requires Python 3 and the pinned dependency in `tests/requirements-gravitee.txt`, installed through approved enterprise tooling. No script runs apply. Source-level tests and upstream schema checks do not establish runtime enforcement or deployment approval.
