@@ -1,0 +1,20 @@
+# Overlay for the existing environment root; illustrative names, not deployment approval.
+# Use only after reviewing docs/phase2/DEPLOYMENT.md and required organizational inputs.
+foundry = {
+  account_name = "foundry-aicore-test-unique"
+  custom_subdomain_name = "foundry-aicore-test-unique"
+  projects = {
+    application = {
+      display_name = "Enterprise AI application"
+      description = "Explicitly configured Foundry project"
+      grant_account_access = false
+      key_vault_secret_read = false
+      storage_blob_read = false
+      users = {}
+    }
+  }
+  enable_model_deployments = false
+  approved_models = {}
+  deployments = {}
+}
+foundry_grant_workload_openai_access = false

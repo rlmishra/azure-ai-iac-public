@@ -1,5 +1,7 @@
 # Phase 1 validation report
 
+> Historical Phase 1 evidence. For implemented Phase 2 source, current capability verification and local results, see [docs/phase2](phase2/VALIDATION.md).
+
 Date: 2026-11-13. Execution platform: managed Linux amd64 environment. No Azure outbound identity or secrets were configured. Scope: Azure foundation source and local checks only.
 
 ## Successful checks

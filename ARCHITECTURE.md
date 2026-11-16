@@ -1,4 +1,4 @@
-# Phase 1 architecture and operating boundaries
+# Azure AI architecture and operating boundaries — Phases 1 and 2
 
 ## Foundation topology
 
@@ -55,4 +55,31 @@ ZRS is the default storage mode; the production example selects GZRS subject to 
 | Chosen Terraform executor | Single plan/apply/state owner; pipeline or TFE | Imperative resource changes by post-deployment tools |
 | AAP phase | Read-only validation, evidence, handover and optional ServiceNow integration | Editing Terraform-managed Azure or gateway resources |
 
-Phase 1 local gate: initialization, schema validation, formatting and mocked tests for all deployment roots. Deployment gate: approved development credentials/state plus landing-zone readiness and an inspected real plan, followed by explicit apply approval. Phase 2 and later source implementation remains pending in this deliverable; no deployment has been used to validate the foundation. Foundry and gateway feature availability must be established using pinned schemas and official API/version documentation in those phases.
+Phase 1 local gate: initialization, schema validation, formatting and mocked tests for all deployment roots. Deployment gate: approved development credentials/state plus landing-zone readiness and an inspected real plan, followed by explicit apply approval. Phase 2 source is now implemented and locally tested as described below; no cloud deployment has been used to validate either phase. Gateway implementation remains pending Phase 3.
+
+
+## Phase 2 — current Foundry account/project integration
+
+The implementation uses Microsoft.CognitiveServices/accounts with kind AIServices and project management enabled, plus child accounts/projects and account model deployments. It does not create the older Microsoft.MachineLearningServices hub/project architecture. Terraform/AzureRM pins and locks remain unchanged; schema support is already present in AzureRM 5.13.0.
+
+```mermaid
+flowchart LR
+    App[Future application + existing workload identity] -->|Entra / approved OpenAI role| Account[Private AIServices Foundry account]
+    PE[Existing networking module: new account endpoint] --> Account
+    Zones[Three new service DNS zones in existing owner] --> PE
+    Account --> Project[Named projects + system identities]
+    Account --> Models[Explicitly activated approved model deployments]
+    Project -.->|Optional Foundry User at account scope| Account
+    Project -.->|Optional read-only resource RBAC| Data[Existing vault / blob storage]
+    Account -->|Audit and metrics| LAW[Existing private Log Analytics workspace]
+```
+
+A null Foundry configuration preserves the original foundation topology. Enabled configurations add one account endpoint and zones for Cognitive Services, OpenAI and services.ai.azure.com. The same account private connection serves project endpoints; their URL maps come directly from the provider/service. Existing endpoint-subnet HTTPS rules apply without broadening egress or creating duplicate DNS owners. Private Link and account outbound restrictions do not configure standard-agent network injection or service-to-vault/storage connectivity.
+
+All model catalogs and deployment requests are empty by default, as are all Foundry grants. Project identity runtime access to account capabilities requires an explicit Foundry User opt-in. Humans receive only explicitly requested project-scoped grants. The existing application identity can receive the fixed account-scoped OpenAI User role; it is not attached to a compute host by this stack. No generic role allowlist is widened.
+
+Catalog selection pins format/name/version and checks region, SKU and a per-deployment capacity ceiling. NoAutoUpgrade prevents automatic model-version selection, but cannot prevent service retirement or establish availability/entitlement. Global/data-zone SKUs require explicit processing-boundary approval. Models on other inference contracts do not inherit an assumed OpenAI URL or SDK/API version.
+
+The account's Audit/AllMetrics diagnostics reuse the existing monitor module/workspace. RequestResponse, Trace and allLogs are not enabled. Content/metadata redaction, retention and live category verification remain governance/runtime gates. No unsupported account-level Application Insights property or automatic agent/application telemetry integration is invented.
+
+Service-managed encryption is implemented. Customer-managed keys, feature-specific connections/runtime state, recovery, advanced tools/agents and multiregion application failover remain explicit exclusions. See docs/phase2 for provider/API evidence, organizational inputs, security checks, deployment handoff and validation limits. The original Phase 1 sections above remain the foundation design; this section adds resources without claiming deployment readiness.

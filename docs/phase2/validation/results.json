@@ -1,0 +1,129 @@
+[
+  {
+    "check": "fmt",
+    "command": [
+      "terraform",
+      "fmt",
+      "-check",
+      "-recursive",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "root-init",
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "root-validate",
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "root-test",
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "dev-init",
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "dev-validate",
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "dev-test",
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "test-init",
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "test-validate",
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "test-test",
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "prod-init",
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "prod-validate",
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ],
+    "exit_code": 0
+  },
+  {
+    "check": "prod-test",
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ],
+    "exit_code": 0
+  }
+]

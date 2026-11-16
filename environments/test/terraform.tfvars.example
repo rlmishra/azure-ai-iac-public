@@ -16,3 +16,7 @@ retention_in_days = 90
 grant_workload_data_access = false
 tags = { owner = "platform-team", cost_center = "REPLACE", data_classification = "confidential", application = "enterprise-ai" }
 # policy_assignments: use approved existing deny/audit initiative IDs.
+
+# Phase 2 remains disabled until explicitly configured. See docs/phase2/DEPLOYMENT.md.
+foundry = null
+foundry_grant_workload_openai_access = false

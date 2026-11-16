@@ -1,24 +1,24 @@
-# Azure enterprise AI infrastructure — Phase 1
+# Enterprise Azure AI infrastructure — Phases 1 and 2
 
-Production-oriented foundation source, **locally validated; not deployed**. The current deliverable implements Phase 1. Foundry, Gravitee, AAP and Azure DevOps implementation remain in the subsequent phases. No Terraform apply, destroy, real Azure plan, production-secret access or cloud mutation was performed.
+Production-oriented Terraform source, **locally validated; not deployed**. Phase 1 provides the private Azure foundation. Phase 2 adds an opt-in Microsoft Foundry AIServices account, projects, explicitly approved model deployments and scoped identity integration. Gravitee, AAP and Azure DevOps implementation remain subsequent phases.
 
-Read [assumptions](docs/ASSUMPTIONS.md), [architecture](ARCHITECTURE.md), [provider verification](docs/PROVIDER-CAPABILITIES.md), [readiness checklist](docs/DEPLOYMENT-READINESS.md) and [validation report](docs/VALIDATION.md) before planning a deployment.
+Start with [architecture](ARCHITECTURE.md), [Phase 2 capability evidence](docs/phase2/CAPABILITIES.md), [configuration/deployment guide](docs/phase2/DEPLOYMENT.md), [readiness checklist](docs/phase2/SECURITY-CHECKLIST.md), and [Phase 2 validation](docs/phase2/VALIDATION.md). The original [Phase 1 report](docs/VALIDATION.md) is historical evidence; it does not describe the new Foundry implementation.
 
-## Contents
+## Repository and safe defaults
 
-- `modules/networking`: VNet, two subnets, NSGs and explicit rules, private DNS and service endpoints through Private Link.
-- `modules/identity`: one user-assigned managed identity and explicit resource-scoped Entra role assignments.
-- `modules/security`: private RBAC Key Vault, private keyless blob storage, retention controls and optional existing policy/initiative assignments.
-- `modules/monitoring`: private Log Analytics, workspace-based Application Insights, Azure Monitor Private Link Scope and diagnostic settings.
-- `environments/dev`, `test`, `prod`: separate deployment roots, version locks, example variables and mocked tests. Never share their state.
-- `tests`: composition, negative input, network isolation and least-privilege tests.
-- `modules/foundry`, `modules/gravitee`, `ansible` and `pipelines`: explicitly pending later phases, with no fictional executable resources.
+- `modules/networking`, `identity`, `security`, `monitoring`: existing Phase 1 foundation modules; their resource implementations and existing tests are preserved.
+- `modules/foundry`: current Microsoft.CognitiveServices AIServices account/project architecture using official AzureRM resources, not the older hub-based Foundry/Azure ML resources.
+- `environments/dev`, `test`, `prod`: independent deployment roots, examples, provider locks and mocked tests. Use separate backend state and permissions per environment.
+- `tests`: unchanged Phase 1 regressions plus Foundry composition/module/negative-input checks.
+- `modules/gravitee`, `ansible`, `pipelines`: later-phase status documentation; no gateway or orchestration implementation is claimed.
 
-The repository root is a reference composition and test entry point. Deploy from exactly one environment root per environment; do not deploy the root and an environment root to the same resources. Environment roots compose the same reusable modules. Keep composition changes synchronized; the supplied tests exercise each root.
+`foundry = null` in every default example preserves Phase 1 behavior. No model is selected, deployed or given capacity by default. Enablement requires an explicit account/subdomain and project map; models also require separate activation and an explicit approval catalog. Read `modules/foundry/variables.tf` for the complete typed interface.
 
-## Windows 11 / VS Code
+The root is a reference composition and test entry point. Deploy from the chosen environment root. Never deploy the reference root and an environment root to the same resources. Environment roots compose the same modules; keep composition changes synchronized.
 
-Install Terraform **1.17.2** from HashiCorp, Git and Azure CLI using approved enterprise distribution. Open this folder in VS Code and use its PowerShell terminal. AzureRM is pinned to **5.13.0**; lock files include authenticated Linux and Windows amd64 checksums. No Azure credentials are needed for these commands:
+## Windows 11 local development
+
+Use VS Code, Git, Terraform **1.17.2** (`terraform.exe`) and approved enterprise Azure tooling. AzureRM remains **5.13.0**; the unchanged lock files contain verified Linux/Windows amd64 provider checksums. From this repository root in PowerShell:
 
 ```powershell
 terraform.exe version
@@ -26,41 +26,38 @@ terraform.exe fmt -check -recursive
 terraform.exe init -backend=false -input=false
 terraform.exe validate
 terraform.exe test
-
-# Run the same checks for each deployment root (script stops on errors):
 ./tests/Validate-Local.ps1
 ```
 
-`init -backend=false` intentionally avoids remote state for local tests. `terraform init` without that flag also works while the optional backend configuration has not been enabled. Provider downloads require access to registry.terraform.io and releases.hashicorp.com. Mocked `terraform test` runs plan commands inside the test harness; it does not authenticate to Azure or create infrastructure. There are no apply-mode tests.
+The helper repeats checks in all four roots and stops on errors. Mocked tests use only `command = plan`; they never authenticate to Azure or provision resources. `init -backend=false` avoids remote-state access during offline validation. These commands need registry/provider downloads but no Azure credentials. Windows execution remains a handoff check; the recorded test host is Linux.
 
-## Prepare a development plan
+## Prepare a reviewed development plan
 
-1. Confirm the readiness checklist, private runner connectivity, approved subscription/region, nonoverlapping IP allocations and globally unique names.
-2. In `environments/dev`, copy `terraform.tfvars.example` to `terraform.tfvars` and replace all illustrative values. The prod root enforces `environment = "prod"`; test and dev similarly enforce their identities.
-3. Use an **existing, separately bootstrapped** remote state account/container. Copy `docs/backend.tf.example` to `environments/dev/backend.tf` and create `backend.hcl` from `docs/backend.hcl.example`. Use separate keys and preferably separate backend permissions/accounts for each environment. Never store secrets in either file.
-4. Authenticate with an approved Azure CLI development login or workload identity federation. Provider authentication is external to these modules. For OIDC, configure `ARM_USE_OIDC`, `ARM_CLIENT_ID`, `ARM_TENANT_ID` and `ARM_SUBSCRIPTION_ID` in the approved runner; do not paste tokens into tfvars. Token delivery depends on the runner and is configured in Phase 5.
-5. Only when development credentials and state access are approved and available, run:
+1. Approve subscription/tenant, unique names, region/data-processing boundary, IP allocation, DNS ownership, model/version/SKU/capacity and identity grants. No example/test value constitutes organizational approval.
+2. In the chosen environment, copy `terraform.tfvars.example` to `terraform.tfvars` and replace illustrative foundation inputs. Keep Foundry null for Phase 1-only behavior.
+3. To opt into Phase 2, copy `foundry.tfvars.example` to `foundry.tfvars`, approve its settings, and supply it as the second var file. It initially creates no models or RBAC grants.
+4. Use an existing separately bootstrapped private backend account/container. Copy `docs/backend.tf.example` into that environment as `backend.tf`, and prepare `backend.hcl` from `docs/backend.hcl.example`. Use unique environment state keys, Entra data access, locking, encryption, versioning and tested recovery. The application storage created by this stack is not its own state backend.
+5. Authenticate through approved CLI or workload identity federation. The runner supplies identity/token delivery externally; never put account keys, access tokens or secret values in Terraform variables or chat. AzureRM automatic resource-provider registration stays disabled; landing-zone administrators must register required providers, including Microsoft.CognitiveServices for Phase 2.
+6. Only with approved development credentials and backend access:
 
 ```powershell
 Set-Location environments/dev
 terraform.exe init -backend-config=backend.hcl
 terraform.exe validate
 terraform.exe test
-terraform.exe plan -input=false -out=dev.tfplan
+terraform.exe plan -input=false -var-file=terraform.tfvars -var-file=foundry.tfvars -out=dev-foundry.tfplan
 ```
 
-Protect plans, state and evidence as confidential artifacts. Inspect the complete plan, inherited policy results, costs and role grants. **Apply requires explicit approval and is outside this deliverable.** Do not use `-target` to work around dependency failures.
+Omit the Foundry overlay for a foundation-only plan. Review the full plan, inherited policy outcomes, role assignments, costs, quota and diagnostic categories. Protect state/plans/evidence as confidential artifacts. **Apply/destroy and cloud deployment require separate explicit approval and were not performed.**
 
-## Important operation details
+## Security and responsibility boundaries
 
-- Public access is disabled for Key Vault, storage and monitoring; CI, AAP and administrators need private DNS resolution and network access. `trusted_prefixes` grants HTTPS in NSGs but does not create routing, peering or an administrative path.
-- With custom `dns_servers`, the landing zone must forward the Azure service public namespaces into Azure DNS Private Resolver or a DNS forwarder that can resolve the linked private zones. Linking zones alone is insufficient.
-- `grant_workload_data_access` defaults to false. Opt-in grants secrets read, blob read and Application Insights telemetry publishing, each at its resource scope. It does not attach the identity to an application host; Phase 2/application deployment must do that and configure Entra-enabled SDKs.
-- Key Vault secrets and storage containers are deliberately not created. Avoid storing secret values in Terraform state. Storage Blob service retention is configured through AzureRM's ARM client in this pinned version, without bootstrapping a public data endpoint.
-- Azure Policy assignments accept existing deny/audit definitions or initiatives with JSON-encoded parameters. Empty defaults **do not establish landing-zone compliance**. DeployIfNotExists/Modify remediation identities, policy exemptions and subscription management remain with the landing-zone owner.
-- Key Vault and storage have `prevent_destroy`; planned replacement/deletion fails while these resource blocks remain. Removing a block removes that protection. Key Vault also retains purge protection and soft deletion. These controls do not replace backups and recovery tests.
-- Regional availability, quota, diagnostic categories and organization policy are runtime checks. A passing mocked plan cannot establish any of them.
+Key Vault, blob storage, monitoring and enabled Foundry data endpoints require private DNS/routing. Trusted source CIDRs change NSG access but do not create routing, peering, private runners or DNS forwarders. Foundry adds one account private endpoint and three service zones through the existing networking owner. Public access and API-key authentication remain disabled.
 
-## Subsequent phases
+Foundry account/project system identities are separate from the existing application user-assigned identity. All role grants are explicit and scoped; the Phase 1 identity allowlist is unchanged. Project-to-account Foundry User, project-user access, project vault/blob reads and application OpenAI inference are separately approved switches/maps. Vault/blob RBAC does not configure agent connections or runtime networking.
 
-Phase 2 must verify current Foundry account/project/model schemas and Private Link support before adding resources; use AzAPI only for a proven AzureRM gap. Phase 3 must install and inspect the official `gravitee-io/apim` schema and document edition/plugin/version dependencies before configuring gateway resources. Phase 4 assigns AAP post-deployment validation/evidence ownership. Phase 5 assigns Azure DevOps validation/approvals ownership and chooses exactly one Terraform executor (pipeline or TFE); AAP must not race it or mutate Terraform-owned resources. See the architecture document for phase gates.
+Azure-managed encryption is the implemented baseline. CMK/key lifecycle, enterprise policy/landing-zone mappings, workload-host identity attachment, sensitive-data redaction, alerts, capacity purchases, recovery and DR need organizational decisions and live validation. Empty policy-assignment inputs do not establish compliance. Storage replication alone is not AI application failover.
+
+Account/project and foundation data resources have Terraform deletion protections as documented; removing configuration can remove Terraform lifecycle protection. No secret values are managed in state. Provider-generated state and plans can still contain sensitive metadata; never commit them.
+
+Phase 3 must inspect official Gravitee provider/server/plugin compatibility and distinguish consumer authentication from backend Entra token acquisition. Phase 4 AAP owns post-deployment validation/evidence; Phase 5 chooses a single Terraform executor and governs approvals. No duplicate executor, gateway governance, agent runtime or application hosting is introduced by Phase 2.
