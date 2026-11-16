@@ -117,3 +117,47 @@ variable "policy_assignments" {
   type    = map(object({ policy_definition_id = string, parameters = optional(string, "{}"), description = optional(string, "Enterprise landing-zone guardrail") }))
   default = {}
 }
+
+variable "foundry" {
+  description = "Null preserves Phase 1. Set an explicit account/project configuration to opt into Phase 2."
+  type = object({
+    account_name          = string
+    custom_subdomain_name = string
+    projects = map(object({
+      description           = optional(string)
+      display_name          = optional(string)
+      grant_account_access  = optional(bool, false)
+      key_vault_secret_read = optional(bool, false)
+      storage_blob_read     = optional(bool, false)
+      users = optional(map(object({
+        principal_id   = string
+        principal_type = optional(string, "ServicePrincipal")
+      })), {})
+    }))
+    enable_model_deployments = optional(bool, false)
+    approved_models = optional(map(object({
+      format            = string
+      name              = string
+      version           = string
+      permitted_regions = set(string)
+      permitted_skus    = set(string)
+      max_capacity      = number
+    })), {})
+    deployments = optional(map(object({
+      approval_id     = string
+      sku_name        = string
+      capacity        = number
+      rai_policy_name = optional(string)
+    })), {})
+  })
+  default = null
+}
+variable "foundry_grant_workload_openai_access" {
+  description = "Explicitly grant the existing application managed identity Cognitive Services OpenAI User at the account scope. Other model API contracts/roles require separate review."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.foundry_grant_workload_openai_access || var.foundry != null
+    error_message = "OpenAI workload access requires an enabled Foundry configuration."
+  }
+}

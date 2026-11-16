@@ -1,5 +1,7 @@
 # Provider verification — Phase 1
 
+> Historical Phase 1 evidence. For implemented Phase 2 source, current capability verification and local results, see [docs/phase2](phase2/VALIDATION.md).
+
 Verified on 2026-11-13 against official release/registry endpoints and installed binaries. These versions are reproducible pins, not a promise that future releases keep the same schemas.
 
 | Dependency | Selection | Evidence |

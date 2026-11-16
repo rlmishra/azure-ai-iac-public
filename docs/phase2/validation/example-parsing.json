@@ -1,0 +1,30 @@
+[
+  {
+    "file": "environments/dev/foundry.tfvars.example",
+    "hcl_parse_exit_code": 0
+  },
+  {
+    "file": "environments/dev/terraform.tfvars.example",
+    "hcl_parse_exit_code": 0
+  },
+  {
+    "file": "environments/prod/foundry.tfvars.example",
+    "hcl_parse_exit_code": 0
+  },
+  {
+    "file": "environments/prod/terraform.tfvars.example",
+    "hcl_parse_exit_code": 0
+  },
+  {
+    "file": "environments/test/foundry.tfvars.example",
+    "hcl_parse_exit_code": 0
+  },
+  {
+    "file": "environments/test/terraform.tfvars.example",
+    "hcl_parse_exit_code": 0
+  },
+  {
+    "file": "terraform.tfvars.example",
+    "hcl_parse_exit_code": 0
+  }
+]

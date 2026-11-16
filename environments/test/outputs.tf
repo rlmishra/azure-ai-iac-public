@@ -13,3 +13,15 @@ output "application_insights_connection_string" {
 output "security_posture" { value = module.security.posture }
 output "monitoring_posture" { value = module.monitoring.posture }
 output "tags" { value = azurerm_resource_group.this.tags }
+
+output "foundry" {
+  description = "Non-secret Foundry metadata for applications/Phase 3; null when disabled. Project endpoint map keys are provider/service defined."
+  value = var.foundry == null ? null : {
+    account_id       = module.foundry[0].account_id
+    account_endpoint = module.foundry[0].account_endpoint
+    openai_endpoint  = module.foundry[0].openai_endpoint
+    projects         = module.foundry[0].projects
+    deployments      = module.foundry[0].deployments
+    posture          = module.foundry[0].posture
+  }
+}

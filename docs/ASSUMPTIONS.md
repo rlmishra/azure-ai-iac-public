@@ -1,5 +1,7 @@
 # Phase 1 decisions (recorded before implementation)
 
+> Historical Phase 1 evidence. For implemented Phase 2 source, current capability verification and local results, see [docs/phase2](phase2/VALIDATION.md).
+
 - Workspace inspection found no existing repository source, Terraform configuration, or AGENTS.md. This is a new scaffold.
 - Scope is Phase 1 only. Foundry, Gravitee, Ansible and pipeline implementation wait for the foundation validation gate. Their directories describe pending work, not deployable integrations.
 - Query the official Terraform Registry and HashiCorp release endpoint, then pin AzureRM 5.13.0 and Terraform 1.17.2, the versions returned on 2026-11-13. Verify resources and attributes against the installed binary schema. No Phase 1 requirement justifies AzAPI. Recheck support before Phase 2.
