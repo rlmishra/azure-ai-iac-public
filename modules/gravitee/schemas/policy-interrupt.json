@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "id": "urn:jsonschema:io:gravitee:policy:interrupt:configuration:InterruptPolicyConfiguration",
+  "properties": {
+    "scope": {
+      "title": "Scope",
+      "description": "Execute policy on <strong>request</strong> (HEAD) phase, <strong>request_content</strong> (includes payload), <strong>response</strong> (HEAD) phase, <strong>response_content</strong> (includes payload) phase.",
+      "type": "string",
+      "default": "REQUEST",
+      "enum": ["REQUEST", "REQUEST_CONTENT", "RESPONSE", "RESPONSE_CONTENT"],
+      "deprecated": true
+    },
+    "statusCode": {
+      "title": "Status Code",
+      "description": "The HTTP status code of the interruption response.",
+      "type": "integer",
+      "default": 500,
+      "minimum": 300,
+      "exclusiveMaximum": 600
+    },
+    "errorKey": {
+      "title": "Error Key",
+      "description": "The error key corresponds to the key which will be mapped to a Response Template.",
+      "type": "string"
+    },
+    "message": {
+      "title": "Message",
+      "description": "Default response payload. This one can be extended by defining a Response Template.",
+      "type": "string"
+    },
+    "variables": {
+      "type": "array",
+      "title": "Variables",
+      "description": "Variables which can be used when defining a Response Template to override the payload containing some crucial information.",
+      "items": {
+        "type": "object",
+        "id": "urn:jsonschema:io:gravitee:policy:interrupt:configuration:Variable",
+        "title": "Variable",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value (support EL)",
+            "type": "string",
+            "gioConfig": {
+              "el": true
+            }
+          }
+        }
+      },
+      "required": ["name", "value"]
+    }
+  },
+  "required": ["errorKey", "message"]
+}

@@ -25,3 +25,8 @@ output "foundry" {
     posture          = module.foundry[0].posture
   }
 }
+
+output "workload_access_grants" {
+  description = "Effective grants for review; no credentials or runtime access evidence."
+  value       = module.identity.access_grants
+}

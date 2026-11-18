@@ -1,0 +1,349 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "definitions": {
+        "authConfigurationBasic": {
+            "type": "object",
+            "title": "Basic authentication configuration",
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "title": "Username",
+                    "description": "Username which will be added to Authorization header in format 'basic user:password'",
+                    "minLength": 1
+                },
+                "password": {
+                    "type": "string",
+                    "title": "Password",
+                    "description": "Password which will be added to Authorization header in format 'basic user:password'",
+                    "minLength": 1,
+                    "format": "password"
+                }
+            },
+            "required": ["username", "password"]
+        },
+        "authConfigurationToken": {
+            "type": "object",
+            "title": "Token authentication configuration",
+            "properties": {
+                "value": {
+                    "type": "string",
+                    "title": "Token value",
+                    "description": "Token value which will be added to Authorization header in format 'bearer <token value>'",
+                    "minLength": 1,
+                    "format": "password"
+                }
+            },
+            "required": ["value"]
+        }
+    },
+    "properties": {
+        "signature": {
+            "title": "Signature",
+            "description": "Define how the JSON Web Token must be signed.",
+            "type": "string",
+            "default": "RSA_RS256",
+            "enum": ["RSA_RS256", "RSA_RS384", "RSA_RS512", "HMAC_HS256", "HMAC_HS384", "HMAC_HS512"],
+            "x-schema-form": {
+                "type": "select",
+                "titleMap": {
+                    "RSA_RS256": "RS256 - RSA signature with SHA-256",
+                    "RSA_RS384": "RS384 - RSA signature with SHA-384",
+                    "RSA_RS512": "RS512 - RSA signature with SHA-512",
+                    "HMAC_HS256": "HS256 - HMAC with SHA-256, requires 256+ bit secret",
+                    "HMAC_HS384": "HS384 - HMAC with SHA-384, requires 384+ bit secret",
+                    "HMAC_HS512": "HS512 - HMAC with SHA-512, requires 512+ bit secret"
+                }
+            }
+        },
+        "publicKeyResolver": {
+            "title": "JWKS resolver",
+            "description": "Define how the JSON Web Key Set is retrieved",
+            "type": "string",
+            "default": "GIVEN_KEY",
+            "enum": ["GIVEN_KEY", "GATEWAY_KEYS", "JWKS_URL"],
+            "x-schema-form": {
+                "type": "select",
+                "titleMap": {
+                    "GIVEN_KEY": "GIVEN_KEY: You must provide a signature key as a resolver parameter according to the signature algorithm",
+                    "GATEWAY_KEYS": "GATEWAY_KEYS: Look for signature key from API Gateway configuration according to issuer and kid from incoming JWT",
+                    "JWKS_URL": "JWKS_URL: Retrieve JWKS from URL (Basically, URL ending with '/.well-known/jwks.json')"
+                }
+            },
+            "gioConfig": {
+                "banner": {
+                    "title": "JWKS resolver",
+                    "text": "<ul><li>GIVEN_KEY: You must provide a signature key as a resolver parameter according to the signature algorithm</li><li>GATEWAY_KEYS: Look for signature key from API Gateway configuration according to issuer and kid from incoming JWT</li><li>JWKS_URL: Retrieve JWKS from URL (Basically, URL ending with '/.well-known/jwks.json')</li></ul>"
+                }
+            }
+        },
+        "resolverParameter": {
+            "title": "Resolver parameter",
+            "description": "Set the signature key GIVEN_KEY or a JWKS_URL following selected resolver (support EL).",
+            "type": "string",
+            "format": "gio-code-editor",
+            "x-schema-form": {
+                "type": "codemirror",
+                "codemirrorOptions": {
+                    "placeholder": "Put signature key content here",
+                    "lineWrapping": true,
+                    "lineNumbers": true,
+                    "allowDropFileTypes": true,
+                    "autoCloseTags": true
+                },
+                "expression-language": true
+            }
+        },
+        "connectTimeout": {
+            "title": "JWKS URL connect timeout",
+            "description": "Only applies when the resolver is JWKS_URL",
+            "type": "integer",
+            "default": 2000
+        },
+        "requestTimeout": {
+            "title": "JWKS URL request timeout",
+            "description": "Only applies when the resolver is JWKS_URL",
+            "type": "integer",
+            "default": 2000
+        },
+        "followRedirects": {
+            "title": "Follow HTTP redirects",
+            "description": "Only applies when the resolver is JWKS_URL",
+            "type": "boolean",
+            "default": false
+        },
+        "useSystemProxy": {
+            "title": "Use system proxy",
+            "description": "Use system proxy (make sense only when resolver is set to JWKS_URL)",
+            "type": "boolean",
+            "default": false
+        },
+        "extractClaims": {
+            "title": "Extract JWT Claims",
+            "description": "Put claims into the 'jwt.claims' context attribute.",
+            "type": "boolean",
+            "default": false
+        },
+        "propagateAuthHeader": {
+            "title": "Propagate Authorization header",
+            "description": "Allows to propagate Authorization header to the target endpoints",
+            "type": "boolean",
+            "default": true
+        },
+        "userClaim": {
+            "title": "User claim",
+            "description": "Claim where the user can be extracted. Supports dot-notation for nested claims (e.g. 'realm_access.preferred_username'). A flat claim whose name literally contains a dot takes precedence.",
+            "type": "string",
+            "default": "sub"
+        },
+        "clientIdClaim": {
+            "title": "Client ID claim",
+            "description": "Claim where the client ID can be extracted. Supports dot-notation for nested claims (e.g. 'act.repository'). A flat claim whose name literally contains a dot takes precedence. Configuring this field will override the standard behavior.",
+            "type": "string"
+        },
+        "checkRequiredScopes": {
+            "title": "Check scopes",
+            "description": "Check required scopes to access the resource",
+            "type": "boolean",
+            "default": false
+        },
+        "requiredScopes": {
+            "type": "array",
+            "title": "Required scopes",
+            "description": "List of required scopes to access the resource. Also advertised as 'scopes_supported' in the protected resource metadata document, so clients request exactly what is enforced.",
+            "items": {
+                "type": "string",
+                "title": "Scope"
+            }
+        },
+        "modeStrict": {
+            "title": "Mode strict",
+            "description": "Check scopes with exactly those configured",
+            "type": "boolean",
+            "default": true
+        },
+        "protectedResourceMetadata": {
+            "type": "object",
+            "title": "Protected resource metadata",
+            "description": "OAuth 2.0 Protected Resource Metadata (RFC 9728). When authorization servers are configured, the document is served at /.well-known/oauth-protected-resource and referenced from the WWW-Authenticate challenge on 401 responses, so a client can discover where to obtain a token for this API instead of having to be configured with it upfront.",
+            "properties": {
+                "authorizationServers": {
+                    "title": "Authorization servers",
+                    "description": "Issuer URLs of the authorization servers that sign the JWTs. Take each value from the 'issuer' field of the authorization server's own discovery document, so it cannot drift from the JWKS URL configured above. Leave empty to serve no metadata document.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "confirmationMethodValidation": {
+            "type": "object",
+            "title": "Confirmation Method Validation",
+            "properties": {
+                "ignoreMissing": {
+                    "title": "Ignore missing CNF",
+                    "description": "Will ignore CNF validation if the token doesn't contain any CNF information. Default is false.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "certificateBoundThumbprint": {
+                    "type": "object",
+                    "title": "Certificate Bound thumbprint (x5t#S256)",
+                    "properties": {
+                        "enabled": {
+                            "title": "Enable certificate bound thumbprint validation",
+                            "description": "Will validate the certificate thumbprint extracted from the access_token with the one provided by the client. The default is false.",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "extractCertificateFromHeader": {
+                            "title": "Extract client certificate from headers",
+                            "description": "Enabled to extract the client certificate from request header. Necessary when the M-TLS connection is handled by a proxy.",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "headerName": {
+                            "title": "Header name",
+                            "description": "Name of the header where to find the client certificate.",
+                            "type": "string",
+                            "default": "ssl-client-cert"
+                        }
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "tokenTypValidation": {
+            "title": "Token Type Validation",
+            "description": "Define the token type to validate. When disabled, the typ header is not checked and tokens with any typ value (including JWS) are accepted.",
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "title": "Enable token type validation",
+                    "description": "When enabled, the typ header of the token is validated against the expected values. When disabled, typ header validation is skipped entirely and tokens with any typ value are accepted. The default is false.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "ignoreMissing": {
+                    "title": "Ignore missing token type",
+                    "description": "Only applies when token type validation is enabled. Will ignore token type validation if the token doesn't contain any token type information. Default is false.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "expectedValues": {
+                    "title": "Expected values",
+                    "description": "Only applies when token type validation is enabled. List of expected token types. If the token type is not in the list, the validation will fail.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": ["JWT"]
+                },
+                "ignoreCase": {
+                    "title": "Ignore case",
+                    "description": "Only applies when token type validation is enabled. Will ignore the case of the token type when comparing the expected values. Default is false.",
+                    "type": "boolean",
+                    "default": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "revocationCheck": {
+            "title": "Revocation Check",
+            "description": "Define revocation check details. If enabled, will check the configured claim of the token against a cached revocation list and deny if a match is found. Disabled by default.",
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "title": "Enable revocation check",
+                    "description": "Will check if the token has been revoked. Default is false.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "revocationClaim": {
+                    "title": "Revocation claim",
+                    "description": "The string claim which will be checked against the revocation list. Default is 'jti'.",
+                    "type": "string",
+                    "default": "jti"
+                },
+                "revocationListUrl": {
+                    "title": "Revocation list URL",
+                    "description": "The URL of the revocation list including protocol, should return a new line seperated list of strings, content type text/plain. No default is provided, required if enabled.",
+                    "type": "string"
+                },
+                "refreshInterval": {
+                    "title": "Revocation list refresh interval",
+                    "description": "The refresh interval in seconds for the cached revocation list. Default is 300.",
+                    "type": "integer",
+                    "default": 300
+                },
+                "connectTimeout": {
+                    "title": "Revocation list connect timeout",
+                    "description": "The connect timeout in milliseconds for retrieving the revocation list. Default is 2000.",
+                    "type": "integer",
+                    "default": 2000
+                },
+                "requestTimeout": {
+                    "title": "Revocation list request timeout",
+                    "description": "The request timeout in milliseconds for retrieving the revocation list. Default is 2000.",
+                    "type": "integer",
+                    "default": 2000
+                },
+                "followRedirects": {
+                    "title": "Revocation list follow redirects",
+                    "description": "If should follow redirects for revocation list requests. Default is false.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "useSystemProxy": {
+                    "title": "Revocation list use system proxy",
+                    "description": "If should use system proxy for revocation list requests. Default is false.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "auth": {
+                    "type": "object",
+                    "title": "Revocation list security configuration",
+                    "oneOf": [
+                        {
+                            "title": "No security",
+                            "properties": {
+                                "type": {
+                                    "const": "none"
+                                }
+                            }
+                        },
+                        {
+                            "title": "Basic security",
+                            "properties": {
+                                "type": {
+                                    "const": "basic"
+                                },
+                                "basic": {
+                                    "$ref": "#/definitions/authConfigurationBasic"
+                                }
+                            },
+                            "required": ["basic"]
+                        },
+                        {
+                            "title": "Token security",
+                            "properties": {
+                                "type": {
+                                    "const": "token"
+                                },
+                                "token": {
+                                    "$ref": "#/definitions/authConfigurationToken"
+                                }
+                            },
+                            "required": ["token"]
+                        }
+                    ]
+                },
+                "additionalProperties": false
+            }
+        }
+    },
+    "required": ["signature", "publicKeyResolver"],
+    "additionalProperties": false
+}

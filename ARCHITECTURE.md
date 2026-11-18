@@ -1,4 +1,4 @@
-# Azure AI architecture and operating boundaries — Phases 1 and 2
+# Azure AI architecture and operating boundaries — Phases 1–3
 
 ## Foundation topology
 
@@ -55,7 +55,7 @@ ZRS is the default storage mode; the production example selects GZRS subject to 
 | Chosen Terraform executor | Single plan/apply/state owner; pipeline or TFE | Imperative resource changes by post-deployment tools |
 | AAP phase | Read-only validation, evidence, handover and optional ServiceNow integration | Editing Terraform-managed Azure or gateway resources |
 
-Phase 1 local gate: initialization, schema validation, formatting and mocked tests for all deployment roots. Deployment gate: approved development credentials/state plus landing-zone readiness and an inspected real plan, followed by explicit apply approval. Phase 2 source is now implemented and locally tested as described below; no cloud deployment has been used to validate either phase. Gateway implementation remains pending Phase 3.
+Phase 1 local gate: initialization, schema validation, formatting and mocked tests for all deployment roots. Deployment gate: approved development credentials/state plus landing-zone readiness and an inspected real plan, followed by explicit apply approval. Phase 2 source is now implemented and locally tested as described below; no cloud deployment has been used to validate either phase. The Phase 3 HTTP gateway reference is described below; advanced AI/MCP controls and live compatibility remain unverified.
 
 
 ## Phase 2 — current Foundry account/project integration
@@ -83,3 +83,30 @@ Catalog selection pins format/name/version and checks region, SKU and a per-depl
 The account's Audit/AllMetrics diagnostics reuse the existing monitor module/workspace. RequestResponse, Trace and allLogs are not enabled. Content/metadata redaction, retention and live category verification remain governance/runtime gates. No unsupported account-level Application Insights property or automatic agent/application telemetry integration is invented.
 
 Service-managed encryption is implemented. Customer-managed keys, feature-specific connections/runtime state, recovery, advanced tools/agents and multiregion application failover remain explicit exclusions. See docs/phase2 for provider/API evidence, organizational inputs, security checks, deployment handoff and validation limits. The original Phase 1 sections above remain the foundation design; this section adds resources without claiming deployment readiness.
+
+
+## Phase 3 — separate Gravitee configuration boundary
+
+```mermaid
+flowchart LR
+    Azure[Separately approved Azure Phase 2 deployment] -->|Approved non-secret metadata artifact| GatewayState[Separate Gravitee Terraform root and state]
+    GatewayState -->|Official Automation API provider| APIM[Existing Gravitee control plane]
+    Client[Subscribed Entra applications] -->|JWT + issuer/audience/role checks| Gateway[Existing private Azure VM gateway]
+    APIM -.->|Reviewed configuration| Gateway
+    Gateway --> Limits[Shared synchronous request limits/quota]
+    Limits --> IMDS[Fixed Azure VM IMDS managed identity]
+    IMDS -->|Runtime token only| Foundry[Private approved OpenAI deployment]
+    Gateway -.->|Optional redacted telemetry; disabled by default| Collector[Existing approved collector]
+```
+
+No Gravitee hosting or Azure resource is created by the gateway roots. Azure retains Private Link/DNS/RBAC ownership. APIM owns API/application/subscription and policy configuration. Consumer JWTs never become Foundry backend credentials. The verified runtime-policy reference acquires a distinct Entra token through Azure VM IMDS; this assumes an isolated Azure VM with the selected user-assigned identity and reviewed account-scoped rights. It is not a universal native connector or AKS/Cloud workload-federation implementation and does not cache tokens.
+
+The exact supported operation is POST chat/completions on an approved deployment; mandatory flow matching and query replacement prevent treating arbitrary project/MCP/agent URLs as inference APIs. Rate/quota policies count requests, not model tokens. Guardrails, token measurement/spend limits and MCP/tool restrictions require separately verified plugin/schema/licensing and payload/protocol design. No such AI safety coverage is implied by the HTTP baseline.
+
+Version/edition/plugin inventory was requested but not supplied. APIM 4.13.x is a candidate reference only; operator confirmations block activation until actual Automation API, license, schema, VM identity, networking/TLS and counter-store review. Configuration/schema tests are not runtime enforcement tests. Any live create/update/start/publish/subscription change requires a separately approved plan/apply; none was executed.
+
+Azure DevOps/TFE in Phase 5 must choose one apply owner per state: Azure first, approve the small metadata artifact, then Gravitee. AAP in Phase 4 consumes redacted evidence and performs approved validation; it must not run competing applies or mutate Terraform resources. Server installation, Entra registrations, licensing, host logs/collectors, rollback and DR remain separately owned operational work.
+
+## Private dependency access and managed identity review
+
+See [dependency access matrix](docs/private-access/DEPENDENCIES.md), [provider/service evidence](docs/private-access/CAPABILITIES.md), [architecture, migration and deployment prerequisites](docs/private-access/DEPLOYMENT.md), [security checklist](docs/private-access/SECURITY-CHECKLIST.md), and [validation](docs/private-access/VALIDATION.md). Independent `workload_data_access` grants default off; the legacy combined grant remains compatible. Gateway VM IMDS now requires explicit hosting and backend RBAC review. Existing supported data-plane private endpoints and keyless settings remain; external management/identity/package dependencies prevent an end-to-end all-private/MI-only claim.

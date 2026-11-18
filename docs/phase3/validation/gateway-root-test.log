@@ -1,0 +1,31 @@
+tests/gravitee-module.tftest.hcl... in progress
+  run "private_draft_contract"... pass
+  run "explicit_publish_and_subscription"... pass
+  run "explicit_redacted_tracing"... pass
+  run "reject_http_backend"... pass
+  run "reject_project_endpoint"... pass
+  run "reject_other_contract"... pass
+  run "reject_unapproved_metadata"... pass
+  run "reject_wrong_deployment"... pass
+  run "reject_fractional_request_limit"... pass
+  run "reject_overlapping_paths"... pass
+  run "reject_unconfirmed_license"... pass
+  run "reject_runtime_mismatch"... pass
+  run "reject_missing_plugin"... pass
+  run "reject_unconfirmed_identity_topology"... pass
+  run "reject_implicit_tracing"... pass
+  run "reject_common_tenant"... pass
+  run "reject_role_expression_injection"... pass
+  run "reject_subscription_in_draft"... pass
+  run "reject_expired_subscription"... pass
+  run "reject_unreviewed_analytics"... pass
+tests/gravitee-module.tftest.hcl... tearing down
+tests/gravitee-module.tftest.hcl... pass
+tests/integration.tftest.hcl... in progress
+  run "disabled_default"... pass
+  run "enabled_private_draft"... pass
+  run "reject_missing_activation_inputs"... pass
+tests/integration.tftest.hcl... tearing down
+tests/integration.tftest.hcl... pass
+
+Success! 23 passed, 0 failed.

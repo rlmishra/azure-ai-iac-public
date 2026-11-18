@@ -51,6 +51,15 @@ variable "private_endpoints" {
     dns_zone_names    = set(string)
   }))
   default = {}
+  validation {
+    condition = alltrue([for pe in values(var.private_endpoints) :
+      length(pe.subresource_names) > 0 &&
+      alltrue([for group in pe.subresource_names : length(trimspace(group)) > 0]) &&
+      length(pe.dns_zone_names) > 0 &&
+      length(setsubtract(pe.dns_zone_names, var.dns_zone_names)) == 0
+    ])
+    error_message = "Every endpoint requires explicit nonempty service subresources and DNS zones owned by this module's dns_zone_names. Reuse the central zone owner; do not silently create unlinked or duplicate zones."
+  }
 }
 variable "dns_zone_names" {
   type    = set(string)

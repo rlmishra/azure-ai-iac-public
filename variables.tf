@@ -160,3 +160,14 @@ variable "foundry_grant_workload_openai_access" {
     error_message = "OpenAI workload access requires an enabled Foundry configuration."
   }
 }
+
+variable "workload_data_access" {
+  description = "Independent resource-scoped permissions for the existing workload UAMI. Host attachment and SDK Entra configuration remain external. Legacy grant_workload_data_access=true grants all three regardless of this object."
+  type = object({
+    key_vault_secret_read = optional(bool, false)
+    storage_blob_read     = optional(bool, false)
+    telemetry_publish     = optional(bool, false)
+  })
+  default  = {}
+  nullable = false
+}

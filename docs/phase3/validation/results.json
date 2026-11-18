@@ -1,0 +1,245 @@
+[
+  {
+    "check": "fmt",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "fmt",
+      "-check",
+      "-recursive",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-root-init",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-root-validate",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-root-test",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-dev-init",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-dev-validate",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-dev-test",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-test-init",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-test-validate",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-test-test",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-prod-init",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-prod-validate",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "azure-prod-test",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-root-init",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-root-validate",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-root-test",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-dev-init",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-dev-validate",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-dev-test",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-test-init",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-test-validate",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-test-test",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-prod-init",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "init",
+      "-backend=false",
+      "-input=false",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-prod-validate",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "validate",
+      "-no-color"
+    ]
+  },
+  {
+    "check": "gateway-prod-test",
+    "exit_code": 0,
+    "command": [
+      "terraform",
+      "test",
+      "-no-color"
+    ]
+  }
+]

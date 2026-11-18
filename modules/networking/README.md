@@ -9,3 +9,5 @@ Requires Terraform 1.17.2 and AzureRM 5.13.0. Configure the provider in the call
 Inputs: `name`, `resource_group_name`, `location`, `tags`, `address_space`, `workload_prefixes`, `endpoint_prefixes`, `trusted_prefixes`, `dns_servers`, `private_endpoints`, `dns_zone_names`.
 
 Outputs: `vnet_id`, `workload_subnet_id`, `endpoint_subnet_id`, `private_endpoint_ids`, `dns_zone_ids`, `default_outbound_access_enabled`.
+
+Endpoint inputs now reject empty service subresources, empty DNS zone sets and references to zones outside this module's owned `dns_zone_names`. Existing roots keep one central owner, including the blob zone shared with AMPLS. Service-specific group/DNS validity still needs official documentation and actual target verification; generic input validation is not service discovery.

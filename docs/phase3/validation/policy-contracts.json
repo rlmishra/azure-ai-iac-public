@@ -1,0 +1,17 @@
+{
+  "status": "pass",
+  "mock_plans_inspected": 20,
+  "policy_configurations_checked": 71,
+  "policy_counts": {
+    "jwt": 5,
+    "policy-interrupt": 10,
+    "shared-policy-group-policy": 5,
+    "transform-headers": 15,
+    "transform-queryparams": 5,
+    "policy-http-callout": 5,
+    "rate-limit": 13,
+    "quota": 13
+  },
+  "upstream_schema_hashes_verified": 7,
+  "runtime_enforcement_verified": false
+}

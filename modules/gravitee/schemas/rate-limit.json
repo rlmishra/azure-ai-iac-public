@@ -1,0 +1,92 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "errorStrategy": {
+            "type": "string",
+            "title": "Error strategy",
+            "description": "Strategy applied to handle rate-limiting internal errors.",
+            "default": "FALLBACK_PASS_TROUGH",
+            "enum": ["BLOCK_ON_INTERNAL_ERROR", "FALLBACK_PASS_TROUGH"],
+            "gioConfig": {
+                "enumLabelMap": {
+                    "BLOCK_ON_INTERNAL_ERROR": "Block queries in case of internal failure",
+                    "FALLBACK_PASS_TROUGH": "Accept queries in case of internal failure (default behavior)"
+                }
+            }
+        },
+        "async": {
+            "type": "boolean",
+            "default": false,
+            "title": "Non-strict mode (async)",
+            "description": "By activating this option, rate-limiting is applied in an asynchronous way meaning that the distributed counter value is not strict (backend can receive more queries than configured)."
+        },
+        "addHeaders": {
+            "type": "boolean",
+            "default": false,
+            "title": "Add response headers",
+            "description": "Add X-Rate-Limit-Limit, X-Rate-Limit-Remaining and X-Rate-Limit-Reset headers in HTTP response"
+        },
+        "rate": {
+            "type": "object",
+            "title": "Apply rate-limiting",
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "default": "",
+                    "title": "Key",
+                    "description": "Key to identify a consumer against whom the rate-limiting will be applied. Leave it empty to use the default behavior (plan/subscription pair). Supports EL.",
+                    "x-schema-form": {
+                        "expression-language": true
+                    }
+                },
+                "useKeyOnly": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Use key only",
+                    "description": "Only uses the custom key to identify the consumer, regardless of the subscription and plan."
+                },
+                "limit": {
+                    "type": "integer",
+                    "title": "Max requests (static)",
+                    "description": "Static limit on the number of requests that can be sent (this limit is used if the value > 0).",
+                    "minimum": 0,
+                    "default": 0
+                },
+                "dynamicLimit": {
+                    "type": "string",
+                    "title": "Max requests (dynamic)",
+                    "description": "Dynamic limit on the number of requests that can be sent (this limit is used if static limit = 0). The dynamic value is based on EL expressions.",
+                    "x-schema-form": {
+                        "expression-language": true
+                    }
+                },
+                "periodTime": {
+                    "type": "integer",
+                    "title": "Static time duration",
+                    "description": "A numeric positive value default set to 1, ignored when a dynamic expression used.",
+                    "minimum": 1,
+                    "default": 1
+                },
+                "periodTimeUnit": {
+                    "type": "string",
+                    "title": "Static time unit",
+                    "default": "SECONDS",
+                    "enum": ["SECONDS", "MINUTES"]
+                },
+                "dynamicPeriodTime": {
+                    "type": "string",
+                    "title": "Dynamic time duration (Supports EL)",
+                    "description": "If provided, expression takes priority over static time duration, sets time unit to SECONDS and fallback value as 1 when left blank.",
+                    "x-schema-form": {
+                        "expression-language": true
+                    },
+                    "gioConfig": {
+                        "el": true
+                    }
+                }
+            }
+        }
+    },
+    "required": ["rate", "errorStrategy"]
+}

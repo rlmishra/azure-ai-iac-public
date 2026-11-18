@@ -21,3 +21,10 @@ environment = "dev"
 # Phase 2 remains disabled until explicitly configured. See docs/phase2/DEPLOYMENT.md.
 foundry = null
 foundry_grant_workload_openai_access = false
+
+# Prefer independent least-privilege grants; retain legacy combined flag as false.
+workload_data_access = {
+  key_vault_secret_read = false
+  storage_blob_read     = false
+  telemetry_publish     = false
+}

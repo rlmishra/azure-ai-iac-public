@@ -1,0 +1,121 @@
+{
+  "date": "2026-11-18",
+  "service_sources": [
+    {
+      "source": "private-endpoint-dns",
+      "url": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
+      "status": 200,
+      "sha256": "2bbada045db9e389e3fe4936ebe087290f06813a8bb8cb83dc87557db12aafc4"
+    },
+    {
+      "source": "storage-private-endpoints",
+      "url": "https://learn.microsoft.com/en-us/azure/storage/common/storage-private-endpoints",
+      "status": 200,
+      "sha256": "23c89df36aa4ad99838a4f36c7b0ca916aacb34367d17067a8f2d5031f05eaca"
+    },
+    {
+      "source": "keyvault-private-link",
+      "url": "https://learn.microsoft.com/en-us/azure/key-vault/general/private-link-service",
+      "status": 200,
+      "sha256": "64a3b882f151e65f6a39060eb73ffb13b59ad6f43445d92ff25dcc14bda3581b"
+    },
+    {
+      "source": "azure-monitor-private-link",
+      "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/private-link-security",
+      "status": 200,
+      "sha256": "58d75123d67478e73a5a933c2b6ba3be67eb6454e1fbf95eafe7424c5d3e1225"
+    },
+    {
+      "source": "appinsights-entra",
+      "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication",
+      "status": 200,
+      "sha256": "7ba4625f44b5dbcae4cb1aa7792681bc0d2d1d8f1affa254deedf6042a837205"
+    },
+    {
+      "source": "foundry-private-link",
+      "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/configure-private-link?view=foundry",
+      "status": 200,
+      "sha256": "6780dd9570df4c1a8a9d5ba6f6cdd74708f2865ce6de4d4f08f42930d0a5adcb"
+    },
+    {
+      "source": "vm-managed-identity",
+      "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token",
+      "status": 200,
+      "sha256": "0441062050238b7fb46433b5bf4eb46984357c5da9815832f7adc8582d0f72f2"
+    },
+    {
+      "source": "data-roles",
+      "url": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/storage",
+      "status": 200,
+      "sha256": "7b34719584a7f7631b88aa8d804805bf4ed32901247961808773c123ba550c5c"
+    },
+    {
+      "source": "vault-roles",
+      "url": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/security",
+      "status": 200,
+      "sha256": "560f8d9d72b826b5e55ab00bcba9817933e4a7d4e3cd330c87ab1c5c30ef9c44"
+    },
+    {
+      "source": "monitor-roles",
+      "url": "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor",
+      "status": 200,
+      "sha256": "94e9c3ca55eb07dd93253a2fdb56b831c8565b14f4ce8f11ac93edef1a738294"
+    },
+    {
+      "source": "azurerm-backend",
+      "url": "https://developer.hashicorp.com/terraform/language/backend/azurerm",
+      "status": 200,
+      "sha256": "dbf7bb0ece99b4a9660af06f7590bbfaf30b918d3cf9d971451125134adc77da"
+    },
+    {
+      "source": "gravitee-provider",
+      "url": "https://raw.githubusercontent.com/gravitee-io/terraform-provider-apim/v1.2.0/docs/index.md",
+      "status": 200,
+      "sha256": "fc076988ec44054e142573736e7111fcff9ef41a6b9d36c2bc870e9ca9169d1c"
+    }
+  ],
+  "pinned_provider_sources": [
+    {
+      "resource": "key_vault",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/v5.13.0/website/docs/r/key_vault.html.markdown",
+      "status": 200,
+      "sha256": "e525ea8b68c4abe9e8b4fb55d317d574ea37aa27842e11c8d5187a7f055bf85a"
+    },
+    {
+      "resource": "storage_account",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/v5.13.0/website/docs/r/storage_account.html.markdown",
+      "status": 200,
+      "sha256": "e443581df4fc5ed16e7191a13a749af7bcac496e2b44456e1fa549f2a6287a7b"
+    },
+    {
+      "resource": "private_endpoint",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/v5.13.0/website/docs/r/private_endpoint.html.markdown",
+      "status": 200,
+      "sha256": "29c38840b6a6cabc0f72f2ff89f99eb00aa266e31f1fb8316f2acb119eed9a64"
+    },
+    {
+      "resource": "monitor_private_link_scope",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/v5.13.0/website/docs/r/monitor_private_link_scope.html.markdown",
+      "status": 200,
+      "sha256": "0d0a0f6f9ce218c50aec4fa2b5d2cc44478779cee9f8c9a104ed3a1e142374f9"
+    },
+    {
+      "resource": "application_insights",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/v5.13.0/website/docs/r/application_insights.html.markdown",
+      "status": 200,
+      "sha256": "ad57eb532e8fa12916a2788782f44e3829737b0fe106605c801757c9d0847009"
+    },
+    {
+      "resource": "role_assignment",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/v5.13.0/website/docs/r/role_assignment.html.markdown",
+      "status": 200,
+      "sha256": "96078f9d9f0b7e7cf9e15f21add7f2f4c0ffbce29c3eed391400c2cc310f45e4"
+    },
+    {
+      "resource": "cognitive_account",
+      "url": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/v5.13.0/website/docs/r/cognitive_account.html.markdown",
+      "status": 200,
+      "sha256": "39423438277efa2eab613a014aace99495bc182681207c4f43b75cdeb0ea73d6"
+    }
+  ]
+}

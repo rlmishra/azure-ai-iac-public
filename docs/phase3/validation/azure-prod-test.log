@@ -1,0 +1,22 @@
+tests/foundation.tftest.hcl... in progress
+  run "private_foundation"... pass
+  run "approved_data_grants"... pass
+  run "reject_unapproved_region"... pass
+  run "reject_missing_tags"... pass
+  run "reject_invalid_storage_name"... pass
+  run "reject_small_endpoint_subnet"... pass
+  run "reject_overlapping_subnets"... pass
+  run "reject_subnet_outside_vnet"... pass
+tests/foundation.tftest.hcl... tearing down
+tests/foundation.tftest.hcl... pass
+tests/foundry-integration.tftest.hcl... in progress
+  run "foundry_private_without_models"... pass
+  run "approved_workload_inference"... pass
+  run "approved_project_runtime_grants"... pass
+  run "foundry_disabled_preserves_foundation"... pass
+  run "reject_inference_without_foundry"... pass
+  run "root_approved_model_deployment"... pass
+tests/foundry-integration.tftest.hcl... tearing down
+tests/foundry-integration.tftest.hcl... pass
+
+Success! 14 passed, 0 failed.

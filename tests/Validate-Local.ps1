@@ -13,7 +13,7 @@ try {
     foreach ($Root in @(".", "environments/dev", "environments/test", "environments/prod")) {
         Push-Location (Join-Path $RepoRoot $Root)
         try {
-            Invoke-Terraform -Arguments @("init", "-backend=false", "-input=false")
+            Invoke-Terraform -Arguments @("init", "-backend=false", "-input=false", "-lockfile=readonly")
             Invoke-Terraform -Arguments @("validate")
             Invoke-Terraform -Arguments @("test")
         } finally { Pop-Location }

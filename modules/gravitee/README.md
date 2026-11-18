@@ -1,3 +1,37 @@
-# Pending Phase 3 — Gravitee
+# Gravitee private Foundry chat proxy
 
-Intentionally no executable resources yet. Implement after preceding phase gates pass; verify provider/API capabilities before implementation.
+Official `gravitee-io/apim` **1.2.0**, Terraform **1.17.2**. Executable configuration uses `apim_apiv4`, `apim_shared_policy_group`, `apim_application`, and `apim_subscription`. Plans are nested API attributes, not a fictional standalone resource. This module configures an existing APIM platform; it does not host or license a gateway.
+
+The reference target is matching **APIM server/gateway 4.13.x**. No actual version, edition, license, plugin inventory, Management API or gateway topology was supplied. Actual compatibility remains unverified. `platform` requires explicit operational confirmations and exact plugin-version inventory before configuration can be enabled. Synthetic versions in tests are not compatibility recommendations. Read [capability matrix](../../docs/phase3/CAPABILITIES.md) and [deployment guide](../../docs/phase3/DEPLOYMENT.md).
+
+## Separate state and examples
+
+Use `gateways/dev`, `gateways/test` or `gateways/prod`; `gateways/` is the reference/test root. Azure roots/providers/locks remain independent and unchanged. Resource creation defaults off. Explicit stack activation retains private, stopped, unpublished APIs with staging plans. Subscription creation additionally requires explicit publication. Publication/subscriptions are separately approved deployment operations, never local validation.
+
+`examples/reviewed-inputs.tfvars.json.example` illustrates the full input shape but is disabled, uses illustrative metadata, has no plugin inventory and leaves operational confirmations false. Copy it into the chosen gateway root as a protected `terraform.tfvars.json`, then replace/review every actual input. It cannot establish licensing, identity availability or organizational approval. Do not combine its backend metadata with arbitrary project/unified-inference endpoints.
+
+Required module inputs are explicitly typed in `variables.tf`: prefix, APIM organization/environment IDs, platform inventory, consumer Entra tenant/audience/app role, Azure VM managed identity client ID, approved backend map and API map. Applications/subscriptions and analytics/tracing are optional. The module itself assumes a calling root has authorized activation; it still enforces platform/license/schema/network/counter attestations. No arbitrary policy JSON, secret credentials or API keys are accepted.
+
+## Supported contract and controls
+
+Only `azure_openai_chat_completions` is supported: approved public-Azure `https://<subdomain>.openai.azure.com/`, explicit Phase 2 deployment ID/name, approval reference and API version. Gateway callers POST to `<context_path>chat/completions`; the exact relative path `/chat/completions` and POST method are required. The backend base is `/openai/deployments/<approved-name>`, preserving the approved relative operation. Flow matching is mandatory; MCP/agent/project APIs are not exposed. Clients cannot select a different upstream host/deployment, and query parameters are cleared before setting the approved api-version. Actual path joining, slash normalization, encoded-path rejection and query enforcement must be proven on the target runtime before production publication.
+
+Consumer security uses a JWT-only plan, RS256/JWKS from the explicit Entra tenant, `azp` application association, signature/time validation by the JWT plugin, and a flow guard checking issuer, exact audience, presence of exp/azp and the required application role. Existing Entra application client IDs are registered as simple APIM application associations; no Entra directory object, OAuth client secret, DCR or API key is created. Explicit, non-duplicated, expiring JWT subscriptions bind approved applications to APIs. Validate actual subscription status/manual validation behavior through the Automation API/runtime; schema validation cannot prove enforcement.
+
+The ordered request flow is: claim authorization; shared synchronous request rate/day-quota; remove consumer credentials/cookies/baggage; discard/replace query; acquire backend token; reject missing token; set backend Authorization. Response credential headers are removed. Shared limits use documented default plan/subscription counter keys, `async = false` and BLOCK_ON_INTERNAL_ERROR. A compatible distributed counter store is an external prerequisite. These are **request counts**, not LLM token limits, context-window caps, spend budgets or AI guardrails.
+
+Backend auth is a limited **Azure VM IMDS reference**, not generic cloud workload federation. A user-assigned identity must be attached to an isolated gateway VM, approved for the target account's OpenAI User role, and available at fixed IMDS 169.254.169.254 with Metadata:true. The verified HTTP Callout policy obtains a Cognitive Services token for the explicitly selected client ID, bypasses the system proxy, rejects non-200 status, extracts only a runtime context token and returns a generic error on failure. No acquired token is a Terraform value. Consumer tokens are never used as backend credentials. No token cache is implemented: per-request IMDS calls impose latency/concurrency/availability limits. AKS WIF, App Service identity endpoints, native LLM connector credentials and Gravitee Cloud are not supported by this mode. A native or cached alternative needs separate schema, identity, failure and license review.
+
+## Telemetry and remaining limits
+
+Content/header/message capture and OTel payload logs are always off. Analytics also defaults off because request metadata may contain personal information; enabling it requires `platform.analytics_privacy_confirmed`. Tracing additionally requires analytics and confirmed exporter/redaction review; it is nonverbose and masks all span attribute values. Host access/debug logs, collector setup, IP minimization, baggage handling, trace-name sensitivity and retention remain external operational responsibilities. Never enable raw token/body logging to diagnose authentication.
+
+AI token policies, prompt/response guardrails and MCP resources are explicitly omitted until actual plugin/version/edition/protocol support is established. The provider has MCP resources and opaque policy configuration surfaces; that alone is not proof of usable controls. No keyless plan, API-key subscription, policy resource invention, local-exec or imperative provisioning HTTP workaround is used.
+
+Non-secret outputs expose HRIDs/API metadata and a generated `policy_contract` for offline checks. Raw provider JSON schema is not a policy validator; the offline checker validates actual mocked-plan policy JSON against seven Git-tree-pinned upstream schemas under `schemas/`, with provenance and upstream license. Configuration validity is not runtime enforcement. Protect state anyway: importing unrelated resources or changing to API-key/DCR patterns can introduce secrets outside this module's safe interface.
+
+The module rejects known incompatible JWT/HTTP Callout major families for this reference: JWT must be 8.x and Callout 6.x, matching the retrieved compatibility matrices. Other plugin versions and exact patch/schema/edition compatibility remain external review requirements; these family checks are not certification.
+
+## Explicit host and backend authorization
+
+Activated platform inputs must include `hosting_model = "azure_vm"` and `backend_rbac_confirmed = true` after external review of the actual VM-attached UAMI and account-scoped OpenAI User grant. Missing/unsupported hosts and unreviewed RBAC are rejected. Existing VM topology/network confirmations still apply. These inputs do not discover or attach an identity; no alternate hosting authentication or managed-identity Automation API login is implied. See [private dependency review](../../docs/private-access/DEPENDENCIES.md).
