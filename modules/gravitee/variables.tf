@@ -21,6 +21,8 @@ variable "environment_id" {
 }
 variable "platform" {
   type = object({
+    hosting_model                         = optional(string)
+    backend_rbac_confirmed                = optional(bool, false)
     server_version                        = string
     gateway_version                       = string
     edition                               = string
@@ -35,6 +37,10 @@ variable "platform" {
     tracing_exporter_redaction_confirmed  = optional(bool, false)
   })
   nullable = false
+  validation {
+    condition     = var.platform.hosting_model == "azure_vm" && var.platform.backend_rbac_confirmed
+    error_message = "IMDS backend authentication requires explicit hosting_model=azure_vm and reviewed account-scoped OpenAI User access for the VM-attached UAMI. AKS, App Service and hosted gateways need a different reviewed authentication implementation."
+  }
   validation {
     condition     = can(regex("^4[.]13[.][0-9]+$", var.platform.server_version)) && var.platform.server_version == var.platform.gateway_version && length(trimspace(var.platform.edition)) > 0
     error_message = "This reference implementation requires explicitly inventoried matching APIM server/gateway 4.13.x versions and edition."

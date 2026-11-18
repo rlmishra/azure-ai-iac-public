@@ -16,7 +16,9 @@
     "private_dns_tls_egress_confirmed": false,
     "distributed_counter_store_confirmed": false,
     "analytics_privacy_confirmed": false,
-    "tracing_exporter_redaction_confirmed": false
+    "tracing_exporter_redaction_confirmed": false,
+    "hosting_model": null,
+    "backend_rbac_confirmed": false
   },
   "consumer": {
     "tenant_id": "00000000-0000-0000-0000-000000000000",

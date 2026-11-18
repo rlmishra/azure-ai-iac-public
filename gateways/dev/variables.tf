@@ -40,6 +40,8 @@ variable "name" {
 }
 variable "platform" {
   type = object({
+    hosting_model                         = optional(string)
+    backend_rbac_confirmed                = optional(bool, false)
     server_version                        = string
     gateway_version                       = string
     edition                               = string

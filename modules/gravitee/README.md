@@ -31,3 +31,7 @@ AI token policies, prompt/response guardrails and MCP resources are explicitly o
 Non-secret outputs expose HRIDs/API metadata and a generated `policy_contract` for offline checks. Raw provider JSON schema is not a policy validator; the offline checker validates actual mocked-plan policy JSON against seven Git-tree-pinned upstream schemas under `schemas/`, with provenance and upstream license. Configuration validity is not runtime enforcement. Protect state anyway: importing unrelated resources or changing to API-key/DCR patterns can introduce secrets outside this module's safe interface.
 
 The module rejects known incompatible JWT/HTTP Callout major families for this reference: JWT must be 8.x and Callout 6.x, matching the retrieved compatibility matrices. Other plugin versions and exact patch/schema/edition compatibility remain external review requirements; these family checks are not certification.
+
+## Explicit host and backend authorization
+
+Activated platform inputs must include `hosting_model = "azure_vm"` and `backend_rbac_confirmed = true` after external review of the actual VM-attached UAMI and account-scoped OpenAI User grant. Missing/unsupported hosts and unreviewed RBAC are rejected. Existing VM topology/network confirmations still apply. These inputs do not discover or attach an identity; no alternate hosting authentication or managed-identity Automation API login is implied. See [private dependency review](../../docs/private-access/DEPENDENCIES.md).

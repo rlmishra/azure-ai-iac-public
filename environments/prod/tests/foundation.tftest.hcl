@@ -75,3 +75,39 @@ run "reject_subnet_outside_vnet" {
   variables { workload_prefixes = ["10.99.1.0/24"] }
   expect_failures = [var.workload_prefixes]
 }
+
+run "vault_only" {
+  command = plan
+  variables { workload_data_access = { key_vault_secret_read = true } }
+  assert {
+    condition     = length(output.workload_access_grants) == 1 && output.workload_access_grants["secrets"].role_definition_name == "Key Vault Secrets User"
+    error_message = "The selected grant must not introduce unrelated vault, storage or telemetry privileges."
+  }
+}
+
+run "blob_only" {
+  command = plan
+  variables { workload_data_access = { storage_blob_read = true } }
+  assert {
+    condition     = length(output.workload_access_grants) == 1 && output.workload_access_grants["blobs"].role_definition_name == "Storage Blob Data Reader"
+    error_message = "The selected grant must not introduce unrelated vault, storage or telemetry privileges."
+  }
+}
+
+run "telemetry_only" {
+  command = plan
+  variables { workload_data_access = { telemetry_publish = true } }
+  assert {
+    condition     = length(output.workload_access_grants) == 1 && output.workload_access_grants["telemetry"].role_definition_name == "Monitoring Metrics Publisher"
+    error_message = "The selected grant must not introduce unrelated vault, storage or telemetry privileges."
+  }
+}
+
+run "explicit_no_data_grants" {
+  command = plan
+  variables { workload_data_access = {} }
+  assert {
+    condition     = length(output.workload_access_grants) == 0
+    error_message = "No explicit permissions must mean no workload data grants."
+  }
+}

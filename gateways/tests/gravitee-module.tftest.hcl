@@ -4,7 +4,7 @@ variables {
   name_prefix             = "enterprise-dev"
   organization_id         = "mock-org"
   environment_id          = "mock-env"
-  platform                = { "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
+  platform                = { "hosting_model" : "azure_vm", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
   consumer_tenant_id      = "22222222-2222-2222-2222-222222222222"
   consumer_audience       = "33333333-3333-3333-3333-333333333333"
   required_app_role       = "AI.Invoke"
@@ -70,7 +70,7 @@ run "explicit_redacted_tracing" {
   module { source = "../modules/gravitee" }
   variables {
     enable_analytics = true
-    platform         = { "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true, "tracing_exporter_redaction_confirmed" : true, "analytics_privacy_confirmed" : true }
+    platform         = { "hosting_model" : "azure_vm", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true, "tracing_exporter_redaction_confirmed" : true, "analytics_privacy_confirmed" : true }
     enable_tracing   = true
   }
   assert {
@@ -138,7 +138,7 @@ run "reject_unconfirmed_license" {
   command = plan
   module { source = "../modules/gravitee" }
   variables {
-    platform = { "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : false, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
+    platform = { "hosting_model" : "azure_vm", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : false, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
   }
   expect_failures = [var.platform]
 }
@@ -146,7 +146,7 @@ run "reject_runtime_mismatch" {
   command = plan
   module { source = "../modules/gravitee" }
   variables {
-    platform = { "server_version" : "4.13.0", "gateway_version" : "4.12.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
+    platform = { "hosting_model" : "azure_vm", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.12.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
   }
   expect_failures = [var.platform]
 }
@@ -154,7 +154,7 @@ run "reject_missing_plugin" {
   command = plan
   module { source = "../modules/gravitee" }
   variables {
-    platform = { "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
+    platform = { "hosting_model" : "azure_vm", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
   }
   expect_failures = [var.platform]
 }
@@ -162,7 +162,7 @@ run "reject_unconfirmed_identity_topology" {
   command = plan
   module { source = "../modules/gravitee" }
   variables {
-    platform = { "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : false, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
+    platform = { "hosting_model" : "azure_vm", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : false, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true }
   }
   expect_failures = [var.platform]
 }
@@ -213,4 +213,39 @@ run "reject_unreviewed_analytics" {
   module { source = "../modules/gravitee" }
   variables { enable_analytics = true }
   expect_failures = [var.enable_analytics]
+}
+
+run "reject_missing_hosting" {
+  command = plan
+  module { source = "../modules/gravitee" }
+  variables { platform = { "hosting_model" : null, "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true } }
+  expect_failures = [var.platform]
+}
+
+run "reject_aks_imds" {
+  command = plan
+  module { source = "../modules/gravitee" }
+  variables { platform = { "hosting_model" : "aks", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true } }
+  expect_failures = [var.platform]
+}
+
+run "reject_appservice_imds" {
+  command = plan
+  module { source = "../modules/gravitee" }
+  variables { platform = { "hosting_model" : "app_service", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true } }
+  expect_failures = [var.platform]
+}
+
+run "reject_cloud_imds" {
+  command = plan
+  module { source = "../modules/gravitee" }
+  variables { platform = { "hosting_model" : "gravitee_cloud", "backend_rbac_confirmed" : true, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true } }
+  expect_failures = [var.platform]
+}
+
+run "reject_unreviewed_backend_rbac" {
+  command = plan
+  module { source = "../modules/gravitee" }
+  variables { platform = { "hosting_model" : "azure_vm", "backend_rbac_confirmed" : false, "server_version" : "4.13.0", "gateway_version" : "4.13.0", "edition" : "MOCK INVENTORY ONLY - NOT A LICENSE CLAIM", "plugin_versions" : { "jwt" : "8.0.0", "http-proxy" : "1.0.0", "policy-interrupt" : "1.0.0", "rate-limit" : "1.0.0", "quota" : "1.0.0", "shared-policy-group-policy" : "1.0.0", "policy-http-callout" : "6.0.0", "transform-headers" : "1.0.0", "transform-queryparams" : "1.0.0" }, "automation_api_confirmed" : true, "license_entitlement_confirmed" : true, "policy_schema_compatibility_confirmed" : true, "azure_vm_managed_identity_confirmed" : true, "private_dns_tls_egress_confirmed" : true, "distributed_counter_store_confirmed" : true } }
+  expect_failures = [var.platform]
 }

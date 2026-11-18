@@ -64,11 +64,18 @@ module "identity" {
   resource_group_name = azurerm_resource_group.this.name
   location            = var.location
   tags                = local.tags
-  assignments = var.grant_workload_data_access ? {
-    secrets   = { scope = module.security.key_vault_id, role_definition_name = "Key Vault Secrets User" }
-    blobs     = { scope = module.security.storage_account_id, role_definition_name = "Storage Blob Data Reader" }
-    telemetry = { scope = module.monitoring.application_insights_id, role_definition_name = "Monitoring Metrics Publisher" }
-  } : {}
+  # Retain legacy resource addresses while allowing independent least-privilege grants.
+  assignments = merge(
+    var.grant_workload_data_access || var.workload_data_access.key_vault_secret_read ? {
+      secrets = { scope = module.security.key_vault_id, role_definition_name = "Key Vault Secrets User" }
+    } : {},
+    var.grant_workload_data_access || var.workload_data_access.storage_blob_read ? {
+      blobs = { scope = module.security.storage_account_id, role_definition_name = "Storage Blob Data Reader" }
+    } : {},
+    var.grant_workload_data_access || var.workload_data_access.telemetry_publish ? {
+      telemetry = { scope = module.monitoring.application_insights_id, role_definition_name = "Monitoring Metrics Publisher" }
+    } : {}
+  )
 }
 
 module "foundry" {

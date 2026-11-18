@@ -1,24 +1,24 @@
 # Verify the Phase 1–3 source
 
-Use this guide to inspect code and repeat local checks from the **azure-ai-phases-1-3** branch. This is source/configuration verification, not proof of deployed Azure/Gravitee functionality. No command below runs Terraform apply or destroy, starts/publishes an API, or creates a live subscription.
+Use this guide to inspect code and repeat local checks from the **security-private-access-managed-identity** branch. This is source/configuration verification, not proof of deployed Azure/Gravitee functionality. No command below runs Terraform apply or destroy, starts/publishes an API, or creates a live subscription.
 
 Use an approved development machine and repository access. If GitHub is blocked on a corporate laptop, obtain an approved internal mirror or transfer method from IT; changing repository visibility is not part of verification.
 
 ## 1. Get the correct branch
 
-In Edge, open [the consolidated branch](https://github.com/rlmishra/azure-ai-iac/tree/azure-ai-phases-1-3). GitHub sign-in/repository permission is required because the repository is private.
+In Edge, open [the private-access review branch](https://github.com/rlmishra/azure-ai-iac/tree/security-private-access-managed-identity). GitHub sign-in/repository permission is required because the repository is private.
 
 For local verification, use PowerShell with Git and Terraform **1.17.2** installed. Clone into a new directory to avoid altering an existing working copy:
 
 ```powershell
-git clone --branch azure-ai-phases-1-3 https://github.com/rlmishra/azure-ai-iac.git azure-ai-verification
+git clone --branch security-private-access-managed-identity https://github.com/rlmishra/azure-ai-iac.git azure-ai-verification
 Set-Location azure-ai-verification
 git branch --show-current
 git log -1 --format="%H %s"
 git status --short
 ```
 
-Expected branch: `azure-ai-phases-1-3`. A fresh clone should have a clean working tree. The consolidated implementation reference is commit `07e818cf28c43e6cab3fdeb099e0eda0e62fac5a`; this guide and future reviewed updates can produce later commits. Do not interpret that reference as an instruction to reset or discard local work.
+Expected branch: `security-private-access-managed-identity`. A fresh clone should have a clean working tree. The original consolidated implementation reference is commit `07e818cf28c43e6cab3fdeb099e0eda0e62fac5a`; this guide and future reviewed updates can produce later commits. Do not interpret that reference as an instruction to reset or discard local work.
 
 ## 2. Inspect the actual code
 
@@ -80,13 +80,13 @@ Expected implementation-reference results:
 
 | Suite | Mocked Terraform tests |
 |---|---:|
-| Azure reference root | 33 |
-| Azure dev / test / prod | 14 each |
-| Gateway reference root | 23 |
+| Azure reference root | 42 |
+| Azure dev / test / prod | 18 each |
+| Gateway reference root | 28 |
 | Gateway dev / test / prod | 3 each |
-| **Total** | **107 passed, 0 failed** |
+| **Total** | **133 passed, 0 failed** |
 
-The Python checker additionally verifies **71 rendered policy configurations** across 20 mock plans against seven pinned upstream schemas and the documented shared-group invocation contract. It reports `runtime_enforcement_verified: false`. These are configuration checks, not 71 live runtime tests. Future reviewed changes may deliberately change these counts; inspect their tests and validation reports.
+The Python checker additionally verifies **81 rendered policy configurations** across 25 mock plans against seven pinned upstream schemas and the documented shared-group invocation contract. It reports `runtime_enforcement_verified: false`. These are configuration checks, not 81 live runtime tests. Future reviewed changes may deliberately change these counts; inspect their tests and validation reports.
 
 ## 4. Run a focused verification snippet
 
@@ -123,7 +123,9 @@ if ($LASTEXITCODE -ne 0) { throw "Policy schema verification failed" }
 - [Phase 1 validation](docs/VALIDATION.md)
 - [Phase 2 validation](docs/phase2/VALIDATION.md)
 - [Phase 3 validation](docs/phase3/VALIDATION.md)
-- [Per-root test counts](docs/phase3/validation/test-counts.json)
+- [Current private-access validation](docs/private-access/VALIDATION.md)
+- [Current per-root results and policy counts](docs/private-access/validation-results.json)
+- [Historical Phase 3 per-root test counts](docs/phase3/validation/test-counts.json)
 - [Policy contract results](docs/phase3/validation/policy-contracts.json)
 - [Secret-scan report](docs/phase3/validation/secret-scan.json)
 - [Provider/plugin compatibility matrix](docs/phase3/CAPABILITIES.md)
@@ -136,3 +138,5 @@ Committed reports describe the recorded verification run; they do not automatica
 Actual Gravitee server/gateway edition, licensing, plugin inventory and runtime compatibility remain unverified. The HTTP reference has a limited Azure VM IMDS backend-identity mode, not universal managed identity/workload federation. LLM token limits, AI guardrails and MCP/tool controls are **not implemented**; request-count quotas are not token budgets.
 
 No deployed Foundry endpoint, private DNS/TLS path, JWT/subscription enforcement, distributed-counter behavior, IMDS token acquisition or telemetry privacy is established by mocked tests. Read the [Phase 3 deployment guide](docs/phase3/DEPLOYMENT.md) and [security checklist](docs/phase3/SECURITY-CHECKLIST.md) for approved live-development prerequisites. Keep deployment/publication disabled until those inputs and approvals are resolved. Never put credentials in chat, source or tfvars, and do not commit state, plans, live variable files or provider caches.
+
+Current private-access branch results and limits: [validation report](docs/private-access/VALIDATION.md). Earlier Phase 1–3 reports retain historical counts. The additional expected-invalid-input cases can produce partial mock-plan policy objects; rendered counts are not distinct runtime scenarios.

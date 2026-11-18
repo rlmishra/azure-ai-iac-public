@@ -6,3 +6,8 @@ key                  = "enterprise-ai/dev/foundation.tfstate"
 use_azuread_auth     = true
 # For an approved federated runner, also set use_oidc = true and configure
 # its ARM_* identity/token-delivery environment externally.
+
+# For an approved Azure-hosted managed identity runner, select use_msi = true
+# instead of use_oidc, and supply the intended client_id externally if required.
+# The runner also needs private blob DNS/routing and state-container data RBAC.
+# Identity settings do not create private endpoints or bootstrap storage.

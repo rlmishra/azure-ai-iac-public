@@ -9,7 +9,7 @@ try {
     foreach ($Root in @("gateways", "gateways/dev", "gateways/test", "gateways/prod")) {
         Push-Location (Join-Path $RepoRoot $Root)
         try {
-            & $Terraform init -backend=false -input=false
+            & $Terraform init -backend=false -input=false -lockfile=readonly
             if ($LASTEXITCODE -ne 0) { throw "Terraform init failed" }
             & $Terraform validate
             if ($LASTEXITCODE -ne 0) { throw "Terraform validation failed" }

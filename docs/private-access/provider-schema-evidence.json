@@ -1,0 +1,211 @@
+{
+  "provider": "hashicorp/azurerm",
+  "version": "5.13.0",
+  "terraform": "1.17.2",
+  "attributes": {
+    "azurerm_key_vault": {
+      "public_network_access_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "rbac_authorization_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "required": true
+      }
+    },
+    "azurerm_storage_account": {
+      "public_network_access": {
+        "type": "string",
+        "description_kind": "plain",
+        "optional": true,
+        "computed": true
+      },
+      "shared_access_key_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "local_user_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "default_to_oauth_authentication": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      }
+    },
+    "azurerm_application_insights": {
+      "local_authentication_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "internet_ingestion_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "internet_query_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      }
+    },
+    "azurerm_log_analytics_workspace": {
+      "local_authentication_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "internet_ingestion_access_type": {
+        "type": "string",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "internet_query_access_type": {
+        "type": "string",
+        "description_kind": "plain",
+        "optional": true
+      }
+    },
+    "azurerm_monitor_private_link_scope": {
+      "ingestion_access_mode": {
+        "type": "string",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "query_access_mode": {
+        "type": "string",
+        "description_kind": "plain",
+        "optional": true
+      }
+    },
+    "azurerm_cognitive_account": {
+      "public_network_access_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "local_auth_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "outbound_network_access_restricted": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      },
+      "project_management_enabled": {
+        "type": "bool",
+        "description_kind": "plain",
+        "optional": true
+      }
+    },
+    "azurerm_role_assignment": {
+      "role_definition_name": {
+        "type": "string",
+        "description_kind": "plain",
+        "optional": true,
+        "computed": true
+      },
+      "role_definition_id": {
+        "type": "string",
+        "description_kind": "plain",
+        "optional": true,
+        "computed": true
+      },
+      "scope": {
+        "type": "string",
+        "description_kind": "plain",
+        "required": true
+      },
+      "principal_id": {
+        "type": "string",
+        "description_kind": "plain",
+        "required": true
+      }
+    }
+  },
+  "private_endpoint_blocks": {
+    "private_service_connection": {
+      "nesting_mode": "list",
+      "block": {
+        "attributes": {
+          "is_manual_connection": {
+            "type": "bool",
+            "description_kind": "plain",
+            "required": true
+          },
+          "name": {
+            "type": "string",
+            "description_kind": "plain",
+            "required": true
+          },
+          "private_connection_resource_alias": {
+            "type": "string",
+            "description_kind": "plain",
+            "optional": true
+          },
+          "private_connection_resource_id": {
+            "type": "string",
+            "description_kind": "plain",
+            "optional": true
+          },
+          "private_ip_address": {
+            "type": "string",
+            "description_kind": "plain",
+            "computed": true
+          },
+          "request_message": {
+            "type": "string",
+            "description_kind": "plain",
+            "optional": true
+          },
+          "subresource_names": {
+            "type": [
+              "list",
+              "string"
+            ],
+            "description_kind": "plain",
+            "optional": true
+          }
+        },
+        "description_kind": "plain"
+      },
+      "min_items": 1,
+      "max_items": 1
+    },
+    "private_dns_zone_group": {
+      "nesting_mode": "list",
+      "block": {
+        "attributes": {
+          "id": {
+            "type": "string",
+            "description_kind": "plain",
+            "computed": true
+          },
+          "name": {
+            "type": "string",
+            "description_kind": "plain",
+            "required": true
+          },
+          "private_dns_zone_ids": {
+            "type": [
+              "list",
+              "string"
+            ],
+            "description_kind": "plain",
+            "required": true
+          }
+        },
+        "description_kind": "plain"
+      },
+      "max_items": 1
+    }
+  }
+}
